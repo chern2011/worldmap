@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Card } from 'react-native-elements';
+import { PLACES } from '../shared/places';
 
 function RenderPlace({place}) {
     if (place) {
@@ -18,8 +19,24 @@ function RenderPlace({place}) {
     return <View />;
 }
 
-function PlaceInfo(props) {
-    return <RenderPlace place={props.place} />;
+class PlaceInfo extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            places: PLACES
+        };
+    }
+
+    static navigationOptions = {
+        title: 'Continents Information'
+    }
+
+    render() {
+        const placeId = this.props.navigation.getParam('placeId');
+        const place = this.state.places.filter(place => place.id === placeId)[0];
+        return <RenderPlace place={place} />;
+    }
 }
 
 export default PlaceInfo;
