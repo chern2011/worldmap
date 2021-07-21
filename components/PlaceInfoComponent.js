@@ -41,6 +41,9 @@ class PlaceInfo extends Component {
 
 export default PlaceInfo;
 
+
+
+
 /*
 function PlaceInfo(props) {
     return <RenderPlace place={props.place} />;
