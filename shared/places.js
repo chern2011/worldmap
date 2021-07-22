@@ -2,7 +2,7 @@ export const PLACES = [
     {
         id: 0,
         name: "Africa",
-        image: "./image/Africamap.jpg",
+        image: "/image/Africamap.jpg",
         featured: false,
         description: "AFRICA IS THE SECOND LARGEST CONTINENT ON EARTH, BETWEEN 1500-2000 LANGUAGES ARE SPOKEN IN AFRICA, AFRICA IS THE SOURCE OF THE WORLD'S LONGEST RIVER, AFRICA IS HOME TO THE WORLD'S OLDEST UNIVERSITY, THE RICHEST MAN EVER IS AFRICAN, THE WORLD'S LARGEST HOTTEST DESERT IS IN AFRICA."
     },
