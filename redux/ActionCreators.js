@@ -141,3 +141,15 @@ export const addPartners = partners => ({
     type: ActionTypes.ADD_PARTNERS,
     payload: partners
 });
+
+export const postFavorite = placeId => dispatch => {
+    setTimeout(() => {
+        dispatch(addFavorite(placeId));
+    }, 2000);
+};
+
+export const addFavorite = placeId => ({
+    type: ActionTypes.ADD_FAVORITE,
+    payload: placeId
+});
+

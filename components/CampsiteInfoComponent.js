@@ -5,13 +5,20 @@ import { PLACES } from '../shared/places';
 import { COMMENTS } from '../shared/comments';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import { postFavorite } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
         places: state.places,
-        comments: state.comments
+        comments: state.comments,
+        favorites: state.favorites
     };
 };
+
+const mapDispatchToProps = {
+    postFavorite: placeId => (postFavorite(placeId))
+};
+
 function RenderPlace(props) {
 
     const {place} = props;
@@ -87,8 +94,8 @@ class PlaceInfo extends Component {
         return (
             <ScrollView>
                 <RenderPlace place={place}
-                    favorite={this.state.favorite}
-                    markFavorite={() => this.markFavorite()}
+                    favorite={this.props.favorites.includes(placeId)}
+                    markFavorite={() => this.markFavorite(placeId)}
                 />
                 <RenderComments comments={comments} />
             </ScrollView>
@@ -96,4 +103,4 @@ class PlaceInfo extends Component {
     }
 }
 
-export default connect(mapStateToProps)(PlaceInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceInfo);
