@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList,
     Modal, Button, StyleSheet,
     Alert, PanResponder } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
+import { Card, Icon, Input, Rating } from 'react-native-elements';
 import { PLACES } from '../shared/places';
 import { COMMENTS } from '../shared/comments';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { postFavorite } from '../redux/ActionCreators';
+import { postFavorite, postComment } from '../redux/ActionCreators';
 import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
@@ -19,7 +19,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    postFavorite: placeId => (postFavorite(placeId))
+    postFavorite: placeId => (postFavorite(placeId)),
+    postComment: (placeId, rating, author, text) => (postComment(placeId, rating, author, text))
 };
 
 function RenderPlace(props) {
@@ -29,6 +30,7 @@ function RenderPlace(props) {
     const view = React.createRef();
 
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -57,6 +59,9 @@ function RenderPlace(props) {
                     { cancelable: false }
                 );
             }
+            else if(recognizeComment(gestureState)) {
+                props.onShowModal();
+            }
             return true;
         }
     });
@@ -76,6 +81,7 @@ function RenderPlace(props) {
                     <Text style={{margin: 10}}>
                         {place.description}
                     </Text>
+                    <View style={styles.cardRow}>
                     <Icon
                         name={props.favorite ? 'heart' : 'heart-o'}
                         type='font-awesome'
@@ -85,6 +91,15 @@ function RenderPlace(props) {
                         onPress={() => props.favorite ? 
                             console.log('Already set as a favorite') : props.markFavorite()}
                     />
+                    <Icon
+                        name='pencil'
+                        type='font-awesome'
+                        color='#5637DD'
+                        raised
+                        reverse
+                        onPress={() => props.onShowModal()}
+                    />
+                </View>
                 </Card>
             </Animatable.View>
         );
@@ -92,14 +107,18 @@ function RenderPlace(props) {
     return <View />;
 }
 
-
 function RenderComments({comments}) {
 
     const renderCommentItem = ({item}) => {
         return (
             <View style={{margin: 10}}>
                 <Text style={{fontSize: 14}}>{item.text}</Text>
-                <Text style={{fontSize: 12}}>{item.rating} Stars</Text>
+                <Rating
+                    startingValue={item.rating}
+                    imageSize={10}
+                    style={{alignItems:'flex-start', paddingVertical:'5%'}}
+                    readonly
+                />
                 <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
             </View>
         );
@@ -125,16 +144,38 @@ class PlaceInfo extends Component {
         this.state = {
             // places: PLACES,
             // comments: COMMENTS,
-            favorite: false
+            favorite: false,
+            showModal: false,
+            rating: 5,
+            author: "",
+            text: ""
         };
     }
 
-    markFavorite(placeId) {
-        this.props.postFavorite(placeId);
+    toggleModal() {
+        this.setState({showModal: !this.state.showModal});
+    }
+    
+    handleComment(placeId, rating, author, text) { 
+        this.props.postComment(placeId, rating, author, text)
+        this.toggleModal();
+    }
+
+    resetForm() {
+        this.setState({
+            showModal: false,
+            rating: 5,
+            author: '',
+            text: ''
+        })
     }
 
     static navigationOptions = {
         title: 'Continents Information'
+    }
+
+    markFavorite(placeId) {
+        this.props.postFavorite(placeId);
     }
 
     render() {
@@ -146,12 +187,79 @@ class PlaceInfo extends Component {
                 <RenderPlace place={place}
                     favorite={this.props.favorites.includes(placeId)}
                     markFavorite={() => this.markFavorite(placeId)}
+                    onShowModal={() => this.toggleModal()}
                 />
                 <RenderComments comments={comments} />
+                <Modal
+                    animationType={'slide'}
+                    transparent={false}
+                    visible={this.state.showModal}
+                    onRequestClose={() => this.toggleModal()}
+                >
+                    <View style={styles.modal}>
+                        <Rating
+                            showRating
+                            startingValue = {5}
+                            imageSize = {40}
+                            onFinishRating={rating => this.setState({rating: rating})} 
+                            style={{paddingVertical: 10}}
+                        />
+                        <Input
+                            placeholder='Author'
+                            leftIcon={{ 
+                                type: 'font-awesome', 
+                                name: 'user-o'}}
+                            leftIconContainerStyle={{paddingRight:10}}
+                            onChangeText={(author)=>this.setState({author: author})}
+                            value={this.state.author}
+                        />
+                        <Input
+                            placeholder='Comment'
+                            leftIcon={{
+                                type: 'font-awesome', 
+                                name: 'comment-o'}}
+                            leftIconContainerStyle={{paddingRight:10}}
+                            onChangeText={(text)=>this.setState({text: text})}
+                            value={this.state.text}
+                        />
+                        <Button
+                            title = 'Submit'
+                            color = '#5637DD'
+                            onPress={() => {
+                                this.handleComment(placeId, this.state.rating, this.state.author, this.state.text );
+                                this.resetForm();
+                            }}
+                        />
+                        <View style={{margin: 10}}>
+                            <Button
+                                onPress={() => {
+                                    this.toggleModal();
+                                    this.resetForm();
+                                }}
+                                color='#808080'
+                                title='Cancel'
+                            />
+                        </View>
+                    </View>
+                </Modal>
             </ScrollView>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    cardRow: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        margin: 20
+    },
+    modal: { 
+        justifyContent: 'center',
+        margin: 20
+    }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceInfo);
 
