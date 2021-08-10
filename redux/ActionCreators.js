@@ -153,3 +153,7 @@ export const addFavorite = placeId => ({
     payload: placeId
 });
 
+export const deleteFavorite = placeId => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: placeId
+}); 
