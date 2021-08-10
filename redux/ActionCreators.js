@@ -50,7 +50,7 @@ export const fetchPlaces = () => dispatch => {
                 throw errMess;
             })
         .then(response => response.json())
-        .then(places => dispatch(addPlaces(place)))
+        .then(places => dispatch(addPlaces(places)))
         .catch(error => dispatch(placesFailed(error.message)));
 };
 

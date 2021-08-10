@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
-import { PLACES } from '../shared/places';
-import { PROMOTIONS } from '../shared/promotions';
-import { PARTNERS } from '../shared/partners';
+// import { PLACES } from '../shared/places';
+// import { PROMOTIONS } from '../shared/promotions';
+// import { PARTNERS } from '../shared/partners';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+const mapStateToProps = state => {
+    return {
+        places: state.places,
+        promotions: state.promotions,
+        partners: state.partners
+    };
+};
 
 function RenderItem({item}) {
     if (item) {
         return (
             <Card
                 featuredTitle={item.name}
-                image={require('./image/WorldMap.jpg')}
+                image={{uri: baseUrl + item.image}}
             >
                 <Text style={{margin: 10}}>
                     {item.description}
@@ -23,14 +33,14 @@ function RenderItem({item}) {
 
 class Home extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            places: PLACES,
-            promotions: PROMOTIONS,
-            partners: PARTNERS
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         places: PLACES,
+    //         promotions: PROMOTIONS,
+    //         partners: PARTNERS
+    //     };
+    // }
 
     static navigationOptions = {
         title: 'Home'
@@ -39,21 +49,21 @@ class Home extends Component {
     render() {
         return (
             <ScrollView>
-                <RenderItem 
-                    item={this.state.places.filter(place => place.featured)[0]}
+                <RenderItem
+                    item={this.props.places.places.filter(place => place.featured)[0]}
                 />
-                <RenderItem 
-                    item={this.state.promotions.filter(promotion => promotion.featured)[0]}
+                <RenderItem
+                    item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
                 />
-                <RenderItem 
-                    item={this.state.partners.filter(partner => partner.featured)[0]}
+                <RenderItem
+                    item={this.props.partners.partners.filter(partner => partner.featured)[0]}
                 />
             </ScrollView>
         );
     }
 }
 
-export default Home;
+export default connect(mapStateToProps)(Home);
 
 /*
 import { View, Text } from 'react-native';

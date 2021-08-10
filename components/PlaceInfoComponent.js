@@ -3,6 +3,15 @@ import { Text, View, ScrollView, FlatList } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { PLACES } from '../shared/places';
 import { COMMENTS } from '../shared/comments';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+const mapStateToProps = state => {
+    return {
+        places: state.places,
+        comments: state.comments
+    };
+};
 
 function RenderPlace(props) {
     const {place} = props;
@@ -10,7 +19,7 @@ function RenderPlace(props) {
         return (
             <Card 
                 featuredTitle={place.name}
-                image={require('./image/WorldMap.jpg')}
+                image={{uri: baseUrl + place.image}}
             >
                 <Text style={{margin: 10}}>
                     {place.description}
@@ -59,8 +68,8 @@ class PlaceInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            places: PLACES,
-            comments: COMMENTS,
+            // places: PLACES,
+            // comments: COMMENTS,
             favorite: false
         };
     }
@@ -75,8 +84,8 @@ class PlaceInfo extends Component {
 
     render() {
         const placeId = this.props.navigation.getParam('placeId');
-        const place = this.state.places.filter(place => place.id === placeId)[0];
-        const comments = this.state.comments.filter(comment => comment.placeId === placeId);
+        const place = this.props.places.places.filter(place => place.id === placeId)[0];
+        const comments = this.props.comments.comments.filter(comment => comment.placeId === placeId);
         return (
             <ScrollView>
                 <RenderPlace place={place}
@@ -89,7 +98,7 @@ class PlaceInfo extends Component {
     }
 }
 
-export default PlaceInfo;
+export default connect(mapStateToProps)(PlaceInfo);
 
 
 
