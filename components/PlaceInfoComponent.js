@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList,
     Modal, Button, StyleSheet,
-    Alert, PanResponder } from 'react-native';
+    Alert, PanResponder, Share } from 'react-native';
 import { Card, Icon, Input, Rating } from 'react-native-elements';
 import { PLACES } from '../shared/places';
 import { COMMENTS } from '../shared/comments';
@@ -66,6 +66,16 @@ function RenderPlace(props) {
         }
     });
 
+    const sharePlace = (title, message, url) => {
+        Share.share({
+            title: title,
+            message: `${title}: ${message} ${url}`,
+            url: url
+        },{
+            dialogTitle: 'Share ' + title
+        });
+    };
+
     if (place) {
         return (
             <Animatable.View
@@ -98,6 +108,14 @@ function RenderPlace(props) {
                         raised
                         reverse
                         onPress={() => props.onShowModal()}
+                    />
+                    <Icon
+                        name={'share'}
+                        type='font-awesome'
+                        color='#5637DD'
+                        raised
+                        reverse
+                        onPress={() => sharePlace(place.name, place.description, baseUrl + place.image)} 
                     />
                 </View>
                 </Card>
