@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, Animated } from 'react-native';
 import { Card } from 'react-native-elements';
 // import { PLACES } from '../shared/places';
 // import { PROMOTIONS } from '../shared/promotions';
@@ -46,6 +46,79 @@ function RenderItem(props) {
 
 class Home extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            scaleValue: new Animated.Value(0)
+        };
+    }
+
+    animate() {
+        Animated.timing(
+            this.state.scaleValue,
+            {
+                toValue: 1,
+                duration: 1500,
+                useNativeDriver: true
+            }
+        ).start();
+    }
+
+    componentDidMount() {
+        this.animate();
+    }
+
+    static navigationOptions = {
+        title: 'Home'
+    }
+
+    render() {
+        return (
+            <Animated.ScrollView style={{transform: [{scale: this.state.scaleValue}]}}>
+                <RenderItem
+                    item={this.props.places.places.filter(place => place.featured)[0]}
+                    isLoading={this.props.places.isLoading}
+                    errMess={this.props.places.errMess}
+                />
+                <RenderItem
+                    item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
+                    isLoading={this.props.promotions.isLoading}
+                    errMess={this.props.promotions.errMess}
+                />
+                <RenderItem
+                    item={this.props.partners.partners.filter(partner => partner.featured)[0]}
+                    isLoading={this.props.partners.isLoading}
+                    errMess={this.props.partners.errMess}
+                />
+            </Animated.ScrollView>
+        );
+    }
+}
+
+export default connect(mapStateToProps)(Home);
+
+/*
+import { View, Text } from 'react-native';
+
+class Home extends Component {
+
+    static navigationOptions = {
+        title: 'Home'
+    }
+
+    render() {
+        return (
+            <View>
+                <Text>Home Component</Text>
+            </View>
+        );
+    }
+}
+
+export default Home;
+
+class Home extends Component {
+
     // constructor(props) {
     //     super(props);
     //     this.state = {
@@ -78,29 +151,4 @@ class Home extends Component {
                     errMess={this.props.partners.errMess}
                 />
             </ScrollView>
-        );
-    }
-}
-
-export default connect(mapStateToProps)(Home);
-
-/*
-import { View, Text } from 'react-native';
-
-class Home extends Component {
-
-    static navigationOptions = {
-        title: 'Home'
-    }
-
-    render() {
-        return (
-            <View>
-                <Text>Home Component</Text>
-            </View>
-        );
-    }
-}
-
-export default Home;
 */
