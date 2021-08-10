@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
-import { CAMPSITES } from '../shared/campsites';
-import { COMMENTS } from '../shared/comments';
+// import { PLACES } from '../shared/places';
+// import { COMMENTS } from '../shared/comments';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return {
-        campsites: state.campsites,
+        places: state.places,
         comments: state.comments
     };
 };
-function RenderCampsite(props) {
 
-    const {campsite} = props;
+function RenderPlace(props) {
 
-    if (campsite) {
+    const {place} = props;
+
+    if (place) {
         return (
             <Card
-                featuredTitle={campsite.name}
-                image={{uri: baseUrl + campsite.image}}>
+                featuredTitle={place.name}
+                image={{uri: baseUrl + place.image}}>
                 <Text style={{margin: 10}}>
-                    {campsite.description}
+                    {place.description}
                 </Text>
                 <Icon
                     name={props.favorite ? 'heart' : 'heart-o'}
@@ -63,7 +66,7 @@ function RenderComments({comments}) {
     );
 }
 
-class CampsiteInfo extends Component {
+class PlaceInfo extends Component {
 
     constructor(props) {
         super(props);
@@ -77,16 +80,16 @@ class CampsiteInfo extends Component {
     }
 
     static navigationOptions = {
-        title: 'Campsite Information'
+        title: 'Continents Information'
     }
 
     render() {
-        const campsiteId = this.props.navigation.getParam('campsiteId');
-        const campsite = this.props.campsites.campsites.filter(campsite => campsite.id === campsiteId)[0];
-        const comments = this.props.comments.comments.filter(comment => comment.campsiteId === campsiteId);
+        const placeId = this.props.navigation.getParam('placeId');
+        const place = this.props.places.places.filter(place => place.id === placeId)[0];
+        const comments = this.props.comments.comments.filter(comment => comment.placeId === placeId);
         return (
             <ScrollView>
-                <RenderCampsite campsite={campsite}
+                <RenderPlace place={place}
                     favorite={this.state.favorite}
                     markFavorite={() => this.markFavorite()}
                 />
@@ -96,4 +99,4 @@ class CampsiteInfo extends Component {
     }
 }
 
-export default connect(mapStateToProps)(CampsiteInfo);
+export default connect(mapStateToProps)(PlaceInfo);
