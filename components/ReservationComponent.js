@@ -52,6 +52,33 @@ class Reservation extends Component {
         )
     }
 
+    handlefilter() {
+        console.log(JSON.stringify(this.state));
+        Alert.alert(
+            'Begin Search?',
+            'Number of Campers: ' + this.state.campers + 
+            '\nFood ' + this.state.hikeIn +
+            '\nSize: ' + this.state.campers + 
+            '\nPopulation ' + this.state.hikeIn +
+            '\nDate ' + this.state.date,
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => this.resetForm(),
+                    style: 'cancel'
+                },
+                {
+                    text: 'OK', 
+                    onPress: () => {
+                        this.presentLocalNotification(this.state.date.toLocaleDateString('en-US'));
+                        this.resetForm();
+                    }
+                }
+            ],
+            { cancelable: false }
+        )
+    }
+
     resetForm() {
         this.setState({
             campers: 1,

@@ -32,13 +32,15 @@ class Directory extends Component {
         const renderDirectoryItem = ({item}) => {
             return (
                 <Animatable.View animation='fadeInRightBig' duration={2000}>
-                    <Tile
-                        title={item.name}
-                        caption={item.description}
-                        featured
-                        onPress={() => navigate('PlaceInfo', { placeId: item.id })}
-                        imageSrc={{uri: baseUrl + item.image}}
-                    />
+                    <View style={{width: 100, height: 110,}}>
+                        <Tile
+                            title={item.name}
+                            caption={item.description}
+                            featured
+                            onPress={() => navigate('ContinentInfo', { placeId: item.id })}
+                            imageSrc={{uri: baseUrl + item.image}}
+                        />
+                    </View>
                 </Animatable.View>
             );
         };

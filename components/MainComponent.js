@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Directory from './DirectoryComponent';
-import PlaceInfo from './PlaceInfoComponent';
-import About from './AboutComponent';
-import Contact from './ContactComponent';
+import ContinentInfo from './ContinentInfoComponent';
+import AboutContact from './AboutContactComponent';
+// import Contact from './ContactComponent';
 import Constants from 'expo-constants';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
@@ -40,7 +40,7 @@ const DirectoryNavigator = createStackNavigator(
                 />
             })
         },
-        PlaceInfo: { screen: PlaceInfo}
+        ContinentInfo: { screen: ContinentInfo}
         },
         {
             initialRouteName: 'Directory',
@@ -79,9 +79,9 @@ const HomeNavigator = createStackNavigator(
     }
 );
 
-const AboutNavigator = createStackNavigator(
+const AboutContactNavigator = createStackNavigator(
     {
-        About: { screen: About }
+        AboutContact: { screen: AboutContact }
     },
     {
         defaultNavigationOptions: ({navigation}) => ({
@@ -102,28 +102,28 @@ const AboutNavigator = createStackNavigator(
     }
 );
 
-const ContactNavigator = createStackNavigator(
-    {
-        Contact: { screen: Contact }
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: '#5637DD'
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff'
-            },
-            headerLeft: <Icon
-                name='address-card'
-                type='font-awesome'
-                iconStyle={styles.stackIcon}
-                onPress={() => navigation.toggleDrawer()}
-            />
-        })
-    }
-);
+// const ContactNavigator = createStackNavigator(
+//     {
+//         Contact: { screen: Contact }
+//     },
+//     {
+//         defaultNavigationOptions: ({navigation}) => ({
+//             headerStyle: {
+//                 backgroundColor: '#5637DD'
+//             },
+//             headerTintColor: '#fff',
+//             headerTitleStyle: {
+//                 color: '#fff'
+//             },
+//             headerLeft: <Icon
+//                 name='address-card'
+//                 type='font-awesome'
+//                 iconStyle={styles.stackIcon}
+//                 onPress={() => navigation.toggleDrawer()}
+//             />
+//         })
+//     }
+// );
 
 const ReservationNavigator = createStackNavigator(
     {
@@ -281,10 +281,10 @@ const MainNavigator = createDrawerNavigator(
                 )
             }
         },
-        About: {
-            screen: AboutNavigator,
+        AboutContact: {
+            screen: AboutContactNavigator,
             navigationOptions: {
-                drawerLabel: 'About Us',
+                drawerLabel: 'About and Contact Us',
                 drawerIcon: ({tintColor}) => (
                     <Icon
                         name='info-circle'
@@ -294,21 +294,21 @@ const MainNavigator = createDrawerNavigator(
                     />
                 )
             }
-        },
-        Contact: {
-            screen: ContactNavigator,
-            navigationOptions: {
-                drawerLabel: 'Contact Us',
-                drawerIcon: ({tintColor}) => (
-                    <Icon
-                        name='address-card'
-                        type='font-awesome'
-                        size={24}
-                        color={tintColor}
-                    />
-                )
-            }
         }
+        // Contact: {
+        //     screen: ContactNavigator,
+        //     navigationOptions: {
+        //         drawerLabel: 'Contact Us',
+        //         drawerIcon: ({tintColor}) => (
+        //             <Icon
+        //                 name='address-card'
+        //                 type='font-awesome'
+        //                 size={24}
+        //                 color={tintColor}
+        //             />
+        //         )
+        //     }
+        // }
     },
     {
         initialRouteName: 'Home',
