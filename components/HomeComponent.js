@@ -1,130 +1,25 @@
 import React, { Component } from 'react';
-import { View, Text, Animated } from 'react-native';
-import { Card } from 'react-native-elements';
+import { View, FlatList, Text } from 'react-native';
+// import { ListItem } from 'react-native-elements';
 // import { PLACES } from '../shared/places';
-// import { PROMOTIONS } from '../shared/promotions';
-// import { PARTNERS } from '../shared/partners';
+import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
-        places: state.places,
-        promotions: state.promotions,
-        partners: state.partners
+        places: state.places
     };
 };
-
-function RenderItem(props) {
-    const {item} = props;
-
-    if (props.isLoading) {
-        return <Loading />;
-    }
-    if (props.errMess) {
-        return (
-            <View>
-                <Text>{props.errMess}</Text>
-            </View>
-        );
-    }
-    if (item) {
-        return (
-            <Card
-                featuredTitle={item.name}
-                image={{uri: baseUrl + item.image}}
-            >
-                <Text style={{margin: 10}}>
-                    {item.description}
-                </Text>
-            </Card>
-        );
-    }
-    return <View />;
-}
-
-class Home extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            scaleValue: new Animated.Value(0)
-        };
-    }
-
-    animate() {
-        Animated.timing(
-            this.state.scaleValue,
-            {
-                toValue: 1,
-                duration: 1500,
-                useNativeDriver: true
-            }
-        ).start();
-    }
-
-    componentDidMount() {
-        this.animate();
-    }
-
-    static navigationOptions = {
-        title: 'Home'
-    }
-
-    render() {
-        return (
-            <Animated.ScrollView style={{transform: [{scale: this.state.scaleValue}]}}>
-                <RenderItem
-                    item={this.props.places.places.filter(place => place.featured)[0]}
-                    isLoading={this.props.places.isLoading}
-                    errMess={this.props.places.errMess}
-                />
-                <RenderItem
-                    item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
-                    isLoading={this.props.promotions.isLoading}
-                    errMess={this.props.promotions.errMess}
-                />
-                <RenderItem
-                    item={this.props.partners.partners.filter(partner => partner.featured)[0]}
-                    isLoading={this.props.partners.isLoading}
-                    errMess={this.props.partners.errMess}
-                />
-            </Animated.ScrollView>
-        );
-    }
-}
-
-export default connect(mapStateToProps)(Home);
-
-/*
-import { View, Text } from 'react-native';
-
-class Home extends Component {
-
-    static navigationOptions = {
-        title: 'Home'
-    }
-
-    render() {
-        return (
-            <View>
-                <Text>Home Component</Text>
-            </View>
-        );
-    }
-}
-
-export default Home;
 
 class Home extends Component {
 
     // constructor(props) {
     //     super(props);
     //     this.state = {
-    //         places: PLACES,
-    //         promotions: PROMOTIONS,
-    //         partners: PARTNERS
+    //         places: PLACES
     //     };
     // }
 
@@ -133,22 +28,73 @@ class Home extends Component {
     }
 
     render() {
+        const { navigate } = this.props.navigation;
+        const renderHomeItem = ({item}) => {
+            return (
+                <Animatable.View animation='fadeInRightBig' duration={2000}>
+                    <View style={{width: 100, height: 110,}}>
+                        <Tile
+                            title={item.name}
+                            caption={item.description}
+                            featured
+                            onPress={() => navigate('ContinentInfo', { placeId: item.id })}
+                            imageSrc={{uri: baseUrl + item.image}}
+                        />
+                    </View>
+                </Animatable.View>
+            );
+        };
+
+        if (this.props.places.isLoading) {
+            return <Loading />;
+        }
+        if (this.props.places.errMess) {
+            return (
+                <View>
+                    <Text>{this.props.places.errMess}</Text>
+                </View>
+            );
+        }
         return (
-            <ScrollView>
-                <RenderItem
-                    item={this.props.places.places.filter(place => place.featured)[0]}
-                    isLoading={this.props.places.isLoading}
-                    errMess={this.props.places.errMess}
-                />
-                <RenderItem
-                    item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
-                    isLoading={this.props.promotions.isLoading}
-                    errMess={this.props.promotions.errMess}
-                />
-                <RenderItem
-                    item={this.props.partners.partners.filter(partner => partner.featured)[0]}
-                    isLoading={this.props.partners.isLoading}
-                    errMess={this.props.partners.errMess}
-                />
-            </ScrollView>
+            <FlatList
+                data={this.props.places.places}
+                renderItem={renderHomeItem}
+                keyExtractor={item => item.id.toString()}
+            />
+        );
+    }
+}
+
+export default connect(mapStateToProps)(Home);
+
+
+/*
+import React from 'react';
+import { FlatList } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import { PLACES } from '../shared/places';
+
+function Directory(props) {
+
+    const renderDirectoryItem = ({item}) => {
+        return (
+            <ListItem
+                title={item.name}
+                subtitle={item.description}
+                onPress={() => props.onPress(item.id)}
+                leftAvatar={{ source: require('./Desktop/React Native Profile Project/React Native Assignment/image/WorldMap.jpg')}}
+            />
+        );
+    };
+
+    return (
+        <FlatList
+            data={props.places}
+            renderItem={renderDirectoryItem}
+            keyExtractor={item => item.id.toString()}
+        />
+    );
+}
+
+export default Directory;
 */

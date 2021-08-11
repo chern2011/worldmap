@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList,
-    Modal, Button, StyleSheet,
+    Modal, Button, StyleSheet, Picker,
     Alert, PanResponder, Share } from 'react-native';
 import { Card, Icon, Input, Rating } from 'react-native-elements';
 import { PLACES } from '../shared/places';
@@ -164,6 +164,8 @@ class ContinentInfo extends Component {
             // comments: COMMENTS,
             favorite: false,
             showModal: false,
+            continent: 1,
+            country: '',
             rating: 5,
             author: "",
             text: ""
@@ -182,6 +184,8 @@ class ContinentInfo extends Component {
     resetForm() {
         this.setState({
             showModal: false,
+            continent: 1,
+            country: '',
             rating: 5,
             author: '',
             text: ''
@@ -221,6 +225,28 @@ class ContinentInfo extends Component {
                             imageSize = {40}
                             onFinishRating={rating => this.setState({rating: rating})} 
                             style={{paddingVertical: 10}}
+                        />
+                        <Picker
+                            style={styles.formItem2}
+                            selectedValue={this.state.continent}
+                            onValueChange={itemValue => this.setState({continent: itemValue})}
+                            value={this.state.text}
+                        >
+                            <Picker.Item label='Africa' value='Africa' />
+                            <Picker.Item label='Asia' value='Asia' />
+                            <Picker.Item label='Australia' value='Australia' />
+                            <Picker.Item label='Europe' value='Europe' />
+                            <Picker.Item label='North America' value='North America' />
+                            <Picker.Item label='South America' value='South America' />
+                        </Picker>
+                        <Input
+                            placeholder='Country'
+                            leftIcon={{
+                                type: 'font-awesome', 
+                                name: 'comment-o'}}
+                            leftIconContainerStyle={{paddingRight:10}}
+                            onChangeText={(country)=>this.setState({country: country})}
+                            value={this.state.country}
                         />
                         <Input
                             placeholder='Author'
@@ -276,6 +302,12 @@ const styles = StyleSheet.create({
     modal: { 
         justifyContent: 'center',
         margin: 20
+    },
+    formItem2: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 80,
+        marginLeft: 80
     }
 });
 

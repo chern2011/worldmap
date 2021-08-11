@@ -4,6 +4,7 @@ import { Text, View, ScrollView, StyleSheet,
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Animatable from 'react-native-animatable';
 import * as Notifications from 'expo-notifications';
+import { AndroidNotificationPriority } from 'expo-notifications';
 
 class Reservation extends Component {
 
@@ -11,8 +12,9 @@ class Reservation extends Component {
         super(props);
 
         this.state = {
-            campers: 1,
-            hikeIn: false,
+            Continents: 1,
+            visitors: 1,
+            TourGuide: false,
             date: new Date(),
             showCalendar: false,
             showModal: false
@@ -20,7 +22,7 @@ class Reservation extends Component {
     }
 
     static navigationOptions = {
-        title: 'Reserve Campsite'
+        title: 'Reserve Flight'
     }
 
     toggleModal() {
@@ -31,35 +33,9 @@ class Reservation extends Component {
         console.log(JSON.stringify(this.state));
         Alert.alert(
             'Begin Search?',
-            'Number of Campers: ' + this.state.campers + 
-            '\nHike-In ' + this.state.hikeIn +
-            '\nDate ' + this.state.date,
-            [
-                {
-                    text: 'Cancel',
-                    onPress: () => this.resetForm(),
-                    style: 'cancel'
-                },
-                {
-                    text: 'OK', 
-                    onPress: () => {
-                        this.presentLocalNotification(this.state.date.toLocaleDateString('en-US'));
-                        this.resetForm();
-                    }
-                }
-            ],
-            { cancelable: false }
-        )
-    }
-
-    handlefilter() {
-        console.log(JSON.stringify(this.state));
-        Alert.alert(
-            'Begin Search?',
-            'Number of Campers: ' + this.state.campers + 
-            '\nFood ' + this.state.hikeIn +
-            '\nSize: ' + this.state.campers + 
-            '\nPopulation ' + this.state.hikeIn +
+            'Continents: ' + this.state.continents +
+            '\nNumber of Visitors: ' + this.state.visitors + 
+            '\nTourGuide ' + this.state.TourGuide +
             '\nDate ' + this.state.date,
             [
                 {
@@ -81,8 +57,9 @@ class Reservation extends Component {
 
     resetForm() {
         this.setState({
-            campers: 1,
-            hikeIn: false,
+            continents: 1,
+            visitors: 1,
+            TourGuide: false,
             date: new Date(),
             showCalendar: false,
             showModal: false
@@ -99,7 +76,7 @@ class Reservation extends Component {
 
             Notifications.scheduleNotificationAsync({
                 content: {
-                    title: 'Your Campsite Reservation Search',
+                    title: 'Your Flight Reservation Search',
                     body: `Search for ${date} requested`
                 },
                 trigger: null
@@ -120,11 +97,26 @@ class Reservation extends Component {
             <Animatable.View animation='zoomIn' duration={2000} delay={1000}>
                 <ScrollView>
                     <View style={styles.formRow}>
-                        <Text style={styles.formLabel}>Number of Campers</Text>
+                        <Text style={styles.formLabel}>Continents</Text>
+                        <Picker
+                            style={styles.formItem2}
+                            selectedValue={this.state.continents}
+                            onValueChange={itemValue => this.setState({continents: itemValue})}
+                        >
+                            <Picker.Item label='Africa' value='Africa' />
+                            <Picker.Item label='Asia' value='Asia' />
+                            <Picker.Item label='Australia' value='Australia' />
+                            <Picker.Item label='Europe' value='Europe' />
+                            <Picker.Item label='North America' value='North America' />
+                            <Picker.Item label='South America' value='South America' />
+                        </Picker>
+                    </View>
+                    <View style={styles.formRow}>
+                        <Text style={styles.formLabel}>Number of Visitors</Text>
                         <Picker
                             style={styles.formItem}
-                            selectedValue={this.state.campers}
-                            onValueChange={itemValue => this.setState({campers: itemValue})}
+                            selectedValue={this.state.visitors}
+                            onValueChange={itemValue => this.setState({visitors: itemValue})}
                         >
                             <Picker.Item label='1' value='1' />
                             <Picker.Item label='2' value='2' />
@@ -132,15 +124,18 @@ class Reservation extends Component {
                             <Picker.Item label='4' value='4' />
                             <Picker.Item label='5' value='5' />
                             <Picker.Item label='6' value='6' />
+                            <Picker.Item label='7' value='7' />
+                            <Picker.Item label='8' value='8' />
+                            <Picker.Item label='9' value='9' />
                         </Picker>
                     </View>
                     <View style={styles.formRow}>
-                        <Text style={styles.formLabel}>Hike-In?</Text>
+                        <Text style={styles.formLabel}>Tour Guide?</Text>
                         <Switch
                             style={styles.formItem}
-                            value={this.state.hikeIn}
+                            value={this.state.TourGuide}
                             trackColor={{true: '#5637DD', false: null}}
-                            onValueChange={value => this.setState({hikeIn: value})}
+                            onValueChange={value => this.setState({TourGuide: value})}
                         />
                     </View>
                     <View style={styles.formRow}>
@@ -170,7 +165,7 @@ class Reservation extends Component {
                             onPress={() => this.handleReservation()}
                             title='Search'
                             color='#5637DD'
-                            accessibilityLabel='Tap me to search for available campsites to reserve'
+                            accessibilityLabel='Tap me to search for available flight to reserve'
                         />
                     </View>
                 </ScrollView>
@@ -193,6 +188,9 @@ const styles = StyleSheet.create({
     },
     formItem: {
         flex: 1
+    },
+    formItem2: {
+        flex: 2
     },
     modal: { 
         justifyContent: 'center',

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
-import Directory from './DirectoryComponent';
+// import Directory from './DirectoryComponent';
 import ContinentInfo from './ContinentInfoComponent';
 import AboutContact from './AboutContactComponent';
 // import Contact from './ContactComponent';
@@ -9,6 +9,7 @@ import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
 import Login from './LoginComponent';
 import NetInfo from '@react-native-community/netinfo';
+import Post from './PostComponent';
 import { View, Platform, StyleSheet, Text, ScrollView, Image,
     Alert, ToastAndroid } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -27,10 +28,10 @@ const mapDispatchToProps = {
     fetchPartners
 };
 
-const DirectoryNavigator = createStackNavigator(
+const HomeNavigator = createStackNavigator(
     {
-        Directory: { 
-            screen: Directory,
+        Home: { 
+            screen: Home,
             navigationOptions: ({navigation}) => ({
                 headerLeft: <Icon
                     name='list'
@@ -43,7 +44,7 @@ const DirectoryNavigator = createStackNavigator(
         ContinentInfo: { screen: ContinentInfo}
         },
         {
-            initialRouteName: 'Directory',
+            initialRouteName: 'Home',
             defaultNavigationOptions: {
                 headerStyle: {
                     backgroundColor: '#5637DD'
@@ -56,28 +57,57 @@ const DirectoryNavigator = createStackNavigator(
         }
     );
 
-const HomeNavigator = createStackNavigator(
+const PostNavigator = createStackNavigator(
     {
-        Home: { screen: Home }
+        Post: { 
+            screen: Post,
+            navigationOptions: ({navigation}) => ({
+                headerLeft: <Icon
+                    name='list'
+                    type='font-awesome'
+                    iconStyle={styles.stackIcon}
+                    onPress={() => navigation.toggleDrawer()}
+                />
+            })
+        },
+        ContinentInfo: { screen: ContinentInfo}
     },
     {
-        defaultNavigationOptions: ({navigation}) => ({
+        initialRouteName: 'Post',
+        defaultNavigationOptions: {
             headerStyle: {
                 backgroundColor: '#5637DD'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
                 color: '#fff'
-            },
-            headerLeft: <Icon
-                name='home'
-                type='font-awesome'
-                iconStyle={styles.stackIcon}
-                onPress={() => navigation.toggleDrawer()}
-            />
-        })
+            }
+        }
     }
 );
+
+// const HomeNavigator = createStackNavigator(
+//     {
+//         Home: { screen: Home }
+//     },
+//     {
+//         defaultNavigationOptions: ({navigation}) => ({
+//             headerStyle: {
+//                 backgroundColor: '#5637DD'
+//             },
+//             headerTintColor: '#fff',
+//             headerTitleStyle: {
+//                 color: '#fff'
+//             },
+//             headerLeft: <Icon
+//                 name='home'
+//                 type='font-awesome'
+//                 iconStyle={styles.stackIcon}
+//                 onPress={() => navigation.toggleDrawer()}
+//             />
+//         })
+//     }
+// );
 
 const AboutContactNavigator = createStackNavigator(
     {
@@ -139,7 +169,7 @@ const ReservationNavigator = createStackNavigator(
                 color: '#fff'
             },
             headerLeft: <Icon
-                name='tree'
+                name='plane'
                 type='font-awesome'
                 iconStyle={styles.stackIcon}
                 onPress={() => navigation.toggleDrawer()}
@@ -204,7 +234,7 @@ const CustomDrawerContentComponent = props => (
                     <Image source={require('./images/WorldMap.jpg')} style={styles.drawerImage} />
                 </View>
                 <View style={{flex: 2}}>
-                    <Text style={styles.drawerHeaderText}>NuCamp</Text>
+                    <Text style={styles.drawerHeaderText}>Travel the World</Text>
                 </View>
             </View>
             <DrawerItems {...props} />
@@ -240,26 +270,26 @@ const MainNavigator = createDrawerNavigator(
                 )
             }
         },
-        Directory: {
-            screen: DirectoryNavigator,
-            navigationOptions: {
-                drawerIcon: ({tintColor}) => (
-                    <Icon
-                        name='list'
-                        type='font-awesome'
-                        size={24}
-                        color={tintColor}
-                    />
-                )
-            }
-        },
+        // Directory: {
+        //     screen: DirectoryNavigator,
+        //     navigationOptions: {
+        //         drawerIcon: ({tintColor}) => (
+        //             <Icon
+        //                 name='list'
+        //                 type='font-awesome'
+        //                 size={24}
+        //                 color={tintColor}
+        //             />
+        //         )
+        //     }
+        // },
         Reservation: {
             screen: ReservationNavigator,
             navigationOptions: {
-                drawerLabel: 'Reserve Campsite',
+                drawerLabel: 'Reserve Flight',
                 drawerIcon: ({tintColor}) => (
                     <Icon
-                        name='tree'
+                        name='plane'
                         type='font-awesome'
                         size={24}
                         color={tintColor}
@@ -288,6 +318,20 @@ const MainNavigator = createDrawerNavigator(
                 drawerIcon: ({tintColor}) => (
                     <Icon
                         name='info-circle'
+                        type='font-awesome'
+                        size={24}
+                        color={tintColor}
+                    />
+                )
+            }
+        },
+        Post: {
+            screen: PostNavigator,
+            navigationOptions: {
+                drawerLabel: 'Post Your Experience',
+                drawerIcon: ({tintColor}) => (
+                    <Icon
+                        name='camera'
                         type='font-awesome'
                         size={24}
                         color={tintColor}
@@ -391,13 +435,14 @@ const styles = StyleSheet.create({
     },
     drawerHeaderText: {
         color: '#fff',
+        margin: 40,
         fontSize: 24,
         fontWeight: 'bold'
     },
     drawerImage: {
         margin: 10,
-        height: 60,
-        width: 60
+        height: 65,
+        width: "100%"
     },
     stackIcon: {
         marginLeft: 10,

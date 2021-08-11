@@ -133,7 +133,7 @@ class RegisterTab extends Component {
             lastname: '',
             email: '',
             remember: false,
-            imageUrl: baseUrl + 'images/logo.png'
+            imageUrl: baseUrl + '/images/Maincontactphoto.jpg'
         };
     }
 
@@ -184,9 +184,11 @@ class RegisterTab extends Component {
                     <View style={styles.imageContainer}>
                         <Image
                             source={{uri: this.state.imageUrl}}
-                            loadingIndicatorSource={require('./images/logo.png')}
+                            loadingIndicatorSource={require('./images/Maincontactphoto.jpg')}
                             style={styles.image}
                         />
+                    </View>
+                    <View style={styles.imageContainer}>
                         <Button
                             title='Camera'
                             onPress={this.getImageFromCamera}
@@ -304,8 +306,8 @@ const styles = StyleSheet.create({
         margin: 10
     },
     image: {
-        width: 60,
-        height: 60
+        width: "100%",
+        height: 100
     }
 });
 
