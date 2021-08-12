@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Register from './RegisterComponent';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Input, CheckBox, Button, Icon } from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
@@ -7,7 +8,7 @@ import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { baseUrl } from '../shared/baseUrl';
 
-class LoginTab extends Component {
+class Login extends Component {
 
     constructor(props) {
         super(props);
@@ -133,7 +134,7 @@ class RegisterTab extends Component {
             lastname: '',
             email: '',
             remember: false,
-            imageUrl: baseUrl + '/images/Maincontactphoto.jpg'
+            imageUrl: baseUrl + 'images/logo.png'
         };
     }
 
@@ -184,11 +185,9 @@ class RegisterTab extends Component {
                     <View style={styles.imageContainer}>
                         <Image
                             source={{uri: this.state.imageUrl}}
-                            loadingIndicatorSource={require('./images/Maincontactphoto.jpg')}
+                            loadingIndicatorSource={require('./images/logo.png')}
                             style={styles.image}
                         />
-                    </View>
-                    <View style={styles.imageContainer}>
                         <Button
                             title='Camera'
                             onPress={this.getImageFromCamera}
@@ -262,21 +261,21 @@ class RegisterTab extends Component {
     }
 }
 
-const Login = createBottomTabNavigator(
-    {
-        Login: LoginTab,
-        Register: RegisterTab
-    },
-    {
-        tabBarOptions: {
-            activeBackgroundColor: '#5637DD',
-            inactiveBackgroundColor: '#CEC8FF',
-            activeTintColor: '#fff',
-            inactiveTintColor: '#808080',
-            labelStyle: {fontSize: 16}
-        }
-    }
-);
+// const Login = createBottomTabNavigator(
+//     {
+//         Login: LoginTab,
+//         Register: RegisterTab
+//     },
+//     {
+//         tabBarOptions: {
+//             activeBackgroundColor: '#5637DD',
+//             inactiveBackgroundColor: '#CEC8FF',
+//             activeTintColor: '#fff',
+//             inactiveTintColor: '#808080',
+//             labelStyle: {fontSize: 16}
+//         }
+//     }
+// );
 
 const styles = StyleSheet.create({
     container: {
@@ -306,8 +305,8 @@ const styles = StyleSheet.create({
         margin: 10
     },
     image: {
-        width: "100%",
-        height: 100
+        width: 60,
+        height: 60
     }
 });
 

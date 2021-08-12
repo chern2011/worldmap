@@ -14,6 +14,7 @@ export default function App() {
                 loading={<Loading />}
                 persistor={persistor}>
                 <Main />
+                {/* <Bottomtab /> */}
             </PersistGate>
         </Provider>
     );
