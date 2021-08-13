@@ -1,5 +1,6 @@
 import React from 'react';
 import Main from './components/MainComponent';
+import Side from './components/SidetabComponent';
 import { Provider } from 'react-redux';
 import { ConfigureStore } from './redux/configureStore';
 import { PersistGate } from 'redux-persist/es/integration/react';
@@ -14,7 +15,7 @@ export default function App() {
                 loading={<Loading />}
                 persistor={persistor}>
                 <Main />
-                {/* <Bottomtab /> */}
+                {/* <Side />  */}
             </PersistGate>
         </Provider>
     );
