@@ -95,6 +95,21 @@ class Login extends Component {
                         color='#5637DD'
                     />
                 </View>
+                <View style={styles.formButton}>
+                    <Button
+                        onPress={() => this.props.navigation.navigate('Register')}
+                        title='Register'
+                        icon={
+                            <Icon
+                                name='user-plus'
+                                type='font-awesome'
+                                color='#fff'
+                                iconStyle={{marginRight: 10}}
+                            />
+                        }
+                        buttonStyle={{backgroundColor: '#5637DD'}}
+                    />
+                </View>
             </View>
         );
     }
@@ -119,7 +134,7 @@ const Loginstack = createStackNavigator(
         initialRouteName: 'Login',
         defaultNavigationOptions: {
             headerStyle: {
-                backgroundColor: '#5637DD'
+                backgroundColor: '#1c7506'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -129,28 +144,28 @@ const Loginstack = createStackNavigator(
     }
 );
 
-const Registerstack = createStackNavigator(
-    {
-        Register: { screen: Register }
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: '#5637DD'
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff'
-            },
-            headerLeft: <Icon
-            name='user-plus'
-            type='font-awesome'
-                iconStyle={styles.stackIcon}
-                onPress={() => navigation.toggleDrawer()}
-            />
-        })
-    }
-);
+// const Registerstack = createStackNavigator(
+//     {
+//         Register: { screen: Register }
+//     },
+//     {
+//         defaultNavigationOptions: ({navigation}) => ({
+//             headerStyle: {
+//                 backgroundColor: '#1c7506'
+//             },
+//             headerTintColor: '#fff',
+//             headerTitleStyle: {
+//                 color: '#fff'
+//             },
+//             headerLeft: <Icon
+//             name='user-plus'
+//             type='font-awesome'
+//                 iconStyle={styles.stackIcon}
+//                 onPress={() => navigation.toggleDrawer()}
+//             />
+//         })
+//     }
+// );
 
 const PostNavigator = createStackNavigator(
     {
@@ -159,7 +174,7 @@ const PostNavigator = createStackNavigator(
     {
         defaultNavigationOptions: ({navigation}) => ({
             headerStyle: {
-                backgroundColor: '#5637DD'
+                backgroundColor: '#1c7506'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -182,7 +197,7 @@ const AboutContactNavigator = createStackNavigator(
     {
         defaultNavigationOptions: ({navigation}) => ({
             headerStyle: {
-                backgroundColor: '#5637DD'
+                backgroundColor: '#1c7506'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -205,7 +220,7 @@ const ReservationNavigator = createStackNavigator(
     {
         defaultNavigationOptions: ({navigation}) => ({
             headerStyle: {
-                backgroundColor: '#5637DD'
+                backgroundColor: '#1c7506'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -254,19 +269,19 @@ const MaindrawerNavigator = createDrawerNavigator(
                 )
             }
         },
-        Register: {
-            screen: Registerstack,
-            navigationOptions: {
-                drawerIcon: ({tintColor}) => (
-                    <Icon
-                        name='list'
-                        type='font-awesome'
-                        size={24}
-                        color={tintColor}
-                    />
-                )
-            }
-        },
+        // Register: {
+        //     screen: Registerstack,
+        //     navigationOptions: {
+        //         drawerIcon: ({tintColor}) => (
+        //             <Icon
+        //                 name='list'
+        //                 type='font-awesome'
+        //                 size={24}
+        //                 color={tintColor}
+        //             />
+        //         )
+        //     }
+        // },
         Reservation: {
             screen: ReservationNavigator,
             navigationOptions: {
@@ -312,7 +327,7 @@ const MaindrawerNavigator = createDrawerNavigator(
     },
     {
         initialRouteName: 'Login',
-        drawerBackgroundColor: '#CEC8FF',
+        drawerBackgroundColor: '#7726a3',
         contentComponent: CustomDrawerComponent
     }
 );

@@ -57,34 +57,34 @@ const HomeNavigator = createBottomTabNavigator(
         }
     );
 
-const PostNavigator = createBottomTabNavigator(
-    {
-        Post: { 
-            screen: Post,
-            navigationOptions: ({navigation}) => ({
-                headerLeft: <Icon
-                    name='list'
-                    type='font-awesome'
-                    iconStyle={styles.stackIcon}
-                    onPress={() => navigation.toggleDrawer()}
-                />
-            })
-        },
-        ContinentInfo: { screen: ContinentInfo}
-    },
-    {
-        initialRouteName: 'Post',
-        defaultNavigationOptions: {
-            headerStyle: {
-                backgroundColor: '#5637DD'
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff'
-            }
-        }
-    }
-);
+// const PostNavigator = createBottomTabNavigator(
+//     {
+//         Post: { 
+//             screen: Post,
+//             navigationOptions: ({navigation}) => ({
+//                 headerLeft: <Icon
+//                     name='list'
+//                     type='font-awesome'
+//                     iconStyle={styles.stackIcon}
+//                     onPress={() => navigation.toggleDrawer()}
+//                 />
+//             })
+//         },
+//         ContinentInfo: { screen: ContinentInfo}
+//     },
+//     {
+//         initialRouteName: 'Post',
+//         defaultNavigationOptions: {
+//             headerStyle: {
+//                 backgroundColor: '#5637DD'
+//             },
+//             headerTintColor: '#fff',
+//             headerTitleStyle: {
+//                 color: '#fff'
+//             }
+//         }
+//     }
+// );
 
 // const HomeNavigator = createStackNavigator(
 //     {
@@ -355,8 +355,17 @@ const MainNavigator = createBottomTabNavigator(
         // }
     },
     {
+        tabBarOptions: {
+            activeBackgroundColor: '#5637DD',
+            inactiveBackgroundColor: '#CEC8FF',
+            activeTintColor: '#fff',
+            inactiveTintColor: '#808080',
+            labelStyle: {fontSize: 16}
+        }
+    },
+    {
         initialRouteName: 'Home',
-        drawerBackgroundColor: '#CEC8FF',
+        drawerBackgroundColor: '#00bfff',
         contentComponent: CustomDrawerContentComponent
     }
 );
