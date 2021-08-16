@@ -1,33 +1,68 @@
 import React, { Component } from 'react';
-import Register from './RegisterComponent';
-import AboutContact from './AboutContactComponent';
-import Post from './PostComponent';
-import Reservation from './ReservationComponent';
-import Favorites from './FavoritesComponent';
-import Constants from 'expo-constants';
-import { View, FlatList, Text, Platform, StyleSheet, ScrollView, Image,
-    Alert, ToastAndroid } from 'react-native';
-import { Tile, Card, Input, CheckBox, Button, Icon } from 'react-native-elements';
-import * as SecureStore from 'expo-secure-store';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
-import { createAppContainer } from 'react-navigation';
-import SafeAreaView from 'react-native-safe-area-view';
-import FavoritesComponent from './FavoritesComponent';
+import { View, Text, StyleSheet, Animated } from 'react-native';
+import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
-import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
-        places: state.places
+        places: state.places,
+        promotions: state.promotions,
+        partners: state.partners
     };
 };
 
+function RenderPlace(props) {
+    const {item} = props;
+
+    if (props.isLoading) {
+        return <Loading />;
+    }
+    if (props.errMess) {
+        return (
+            <View>
+                <Text>{props.errMess}</Text>
+            </View>
+        );
+    }
+    if (item) {
+        return (
+            <Card
+                featuredTitle={item.name}
+                image={{uri: baseUrl + item.image}}
+            >
+                <Text style={{margin: 10}}>
+                    {item.description}
+                </Text>
+            </Card>
+        );
+    }
+    return <View />;
+}
+
 class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            scaleValue: new Animated.Value(0)
+        };
+    }
+
+    animate() {
+        Animated.timing(
+            this.state.scaleValue,
+            {
+                toValue: 1,
+                duration: 1500,
+                useNativeDriver: true
+            }
+        ).start();
+    }
+
+    componentDidMount() {
+        this.animate();
+    }
 
     static navigationOptions = {
         title: 'Profile'
@@ -35,128 +70,24 @@ class Profile extends Component {
 
     render() {
         return (
-            <Animatable.View animation='fadeInRightBig' duration={2000}>
-            <View style={{width: 100, height: 110,}}>
-             <Card
+            <Animated.ScrollView style={{transform: [{scale: this.state.scaleValue}]}}>
+
+                <RenderPlace
+                    item={this.props.places.places.filter(place => place.featured)[0]}
+                    isLoading={this.props.places.isLoading}
+                    errMess={this.props.places.errMess}
                 />
-            </View>
-         </Animatable.View>
-    );
-    }
-}
-
-const ProfileNavigator = createStackNavigator(
-    {
-        Profile: { screen: Profile }
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: '#1c7506'
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff'
-            },
-            headerRight: <Icon
-                name='list'
-                type='font-awesome'
-                iconStyle={styles.stackIcon}
-                onPress={() => navigation.toggleDrawer()}
-            />
-        })
-    },
-);
-
-    const FavoritesNavigator = createStackNavigator(
-        {
-            Favorites: { screen: Favorites }
-        },
-        {
-            defaultNavigationOptions: ({navigation}) => ({
-                headerStyle: {
-                    backgroundColor: '#5637DD'
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                    color: '#fff'
-                },
-                headerRight: <Icon
-                    name='heart'
-                    type='font-awesome'
-                    iconStyle={styles.stackIcon}
-                    onPress={() => navigation.toggleDrawer()}
+                <RenderPlace
+                    item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
+                    isLoading={this.props.promotions.isLoading}
+                    errMess={this.props.promotions.errMess}
                 />
-            })
-        }
-    );
-
-    const CustomDrawer = props => (
-        <ScrollView>
-            <SafeAreaView 
-                style={styles.container}
-                forceInset={{top: 'always', horizontal: 'never'}}>
-                <View style={styles.drawerHeader}>
-                    <View style={{flex: 1}}>
-                        <Image source={require('./images/WorldMap.jpg')} style={styles.drawerImage} />
-                    </View>
-                    <View style={{flex: 2}}>
-                        <Text style={styles.drawerHeaderText}>NuCamp</Text>
-                    </View>
-                </View>
-                <DrawerItems {...props} />
-            </SafeAreaView>
-        </ScrollView>
-    ); 
-
-    const RightsideNavigator = createDrawerNavigator(
-        {
-            Profile: {
-                screen: ProfileNavigator,
-                navigationOptions: {
-                    drawerIcon: ({tintColor}) => (
-                        <Icon
-                            name='sign-in'
-                            type='font-awesome'
-                            size={24}
-                            color={tintColor}
-                        />
-                    )
-                }
-            },
-        Favorite: {
-                screen: FavoritesNavigator,
-                navigationOptions: {
-                    drawerIcon: ({tintColor}) => (
-                        <Icon
-                            name='home'
-                            type='font-awesome'
-                            size={24}
-                            color={tintColor}
-                        />
-                    )
-                }
-            },
-        },
-        {
-            initialRouteName: 'Profile',
-            drawerBackgroundColor: '#CEC8FF',
-            drawerPosition: "right",
-            contentComponent: CustomDrawer
-        }
-    );
-
-const Apps3Navigator = createAppContainer(RightsideNavigator)
-class Profile2 extends Component {
-
-    render() {
-        return (
-            <View style={{
-                flex: 1,
-                paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
-            }}>
-                <Apps3Navigator />
-            </View>
+                <RenderPlace
+                    item={this.props.partners.partners.filter(partner => partner.featured)[0]}
+                    isLoading={this.props.partners.isLoading}
+                    errMess={this.props.partners.errMess}
+                />
+            </Animated.ScrollView>
         );
     }
 }
@@ -191,4 +122,4 @@ class Profile2 extends Component {
         }
     });
     
-export default connect(mapStateToProps)(Profile2);
+export default connect(mapStateToProps)(Profile);

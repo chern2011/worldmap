@@ -9,14 +9,13 @@ import NetInfo from '@react-native-community/netinfo';
 import { View, Platform, StyleSheet, Text, ScrollView, Image,
     Alert, ToastAndroid } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
+import { DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { fetchPlaces, fetchComments, fetchPromotions,
     fetchPartners } from '../redux/ActionCreators';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 const mapDispatchToProps = {
     fetchPlaces,
