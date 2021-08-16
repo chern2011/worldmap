@@ -34,36 +34,13 @@ class Profile extends Component {
     }
 
     render() {
-        // const renderProfileItem = ({item}) => {
         return (
             <Animatable.View animation='fadeInRightBig' duration={2000}>
             <View style={{width: 100, height: 110,}}>
              <Card
-    //                 title={item.name}
-    //                 caption={item.description}
-    //                 featured
-    //                 imageSrc={{uri: baseUrl + item.image}}
                 />
             </View>
          </Animatable.View>
-    //     );
-    // }
-    // if (this.props.places.isLoading) {
-    //     return <Loading />;
-    // }
-    // if (this.props.places.errMess) {
-    //     return (
-    //         <View>
-    //             <Text>{this.props.places.errMess}</Text>
-    //         </View>
-    //     );
-    // }
-    // return (
-    //     <FlatList
-    //         data={this.props.places.places}
-    //         renderItem={renderProfileItem}
-    //         keyExtractor={item => item.id.toString()}
-    //     />
     );
     }
 }

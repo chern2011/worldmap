@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
-// import Directory from './DirectoryComponent';
 import ContinentInfo from './ContinentInfoComponent';
 import AboutContact from './AboutContactComponent';
 import Profile from './ProfileComponent';
-// import Contact from './ContactComponent';
 import Constants from 'expo-constants';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
@@ -58,150 +56,6 @@ const HomeNavigator = createBottomTabNavigator(
             }
         }
     );
-
-// const PostNavigator = createBottomTabNavigator(
-//     {
-//         Post: { 
-//             screen: Post,
-//             navigationOptions: ({navigation}) => ({
-//                 headerLeft: <Icon
-//                     name='list'
-//                     type='font-awesome'
-//                     iconStyle={styles.stackIcon}
-//                     onPress={() => navigation.toggleDrawer()}
-//                 />
-//             })
-//         },
-//         ContinentInfo: { screen: ContinentInfo}
-//     },
-//     {
-//         initialRouteName: 'Post',
-//         defaultNavigationOptions: {
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             }
-//         }
-//     }
-// );
-
-// const HomeNavigator = createStackNavigator(
-//     {
-//         Home: { screen: Home }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='home'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
-// const AboutContactNavigator = createBottomTabNavigator(
-//     {
-//         AboutContact: { screen: AboutContact }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='info-circle'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
-// const ContactNavigator = createStackNavigator(
-//     {
-//         Contact: { screen: Contact }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='address-card'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
-// const ReservationNavigator = createStackNavigator(
-//     {
-//         Reservation: { screen: Reservation }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='plane'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
-// const FavoritesNavigator = createBottomTabNavigator(
-//     {
-//         Favorites: { screen: Favorites }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='heart'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
 
 const LoginNavigator = createBottomTabNavigator(
     {
@@ -295,33 +149,6 @@ const MainNavigator = createBottomTabNavigator(
                 )
             }
         },
-        // Directory: {
-        //     screen: DirectoryNavigator,
-        //     navigationOptions: {
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='list'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
-        // Reservation: {
-        //     screen: ReservationNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'Reserve Flight',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='plane'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
         Profile: {
             screen: ProfileNavigator,
             navigationOptions: {
@@ -335,62 +162,6 @@ const MainNavigator = createBottomTabNavigator(
                 )
             }
         },
-        // Favorites: {
-        //     screen: FavoritesNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'My Favorites',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='heart'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
-        // AboutContact: {
-        //     screen: AboutContactNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'About and Contact Us',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='info-circle'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
-        // Post: {
-        //     screen: PostNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'Post Your Experience',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='camera'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // }
-        // Contact: {
-        //     screen: ContactNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'Contact Us',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='address-card'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // }
     },
     {
         tabBarOptions: {
@@ -462,7 +233,6 @@ class Main extends Component {
                 flex: 1,
                 paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
             }}>
-                
                 <AppNavigator />
             </View>
         );
@@ -501,55 +271,3 @@ const styles = StyleSheet.create({
 
 export default connect(null, mapDispatchToProps)(Main);
 
-
-
-/*
-const AppNavigator = createAppContainer(DirectoryNavigator);
-
-class Main extends Component {
-    render() {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
-            }}>
-                <AppNavigator />
-            </View>
-        );
-    }
-}
-
-export default Main;
-*/
-
-
-/*class Main extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            places: PLACES,
-            selectedPlace: null
-        };
-    }
-
-    onPlaceSelect(placeId) {
-        this.setState({selectedPlace: placeId});
-    }
-
-    render() {
-        return (
-            <View style={{flex: 1}}>
-                <Directory
-                    places={this.state.places}
-                    onPress={placeId => this.onPlaceSelect(placeId)}
-                />
-                <Placeinfo
-                    place={this.state.places.filter(
-                        place => place.id === this.state.selectedPlace)[0]}
-                />
-            </View>
-    }
-}
-
-export default Main; */

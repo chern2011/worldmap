@@ -25,13 +25,6 @@ class Register extends Component {
 
     static navigationOptions = {
         title: 'Register'
-        // tabBarIcon: ({tintColor}) => (
-        //     <Icon
-        //         name='user-plus'
-        //         type='font-awesome'
-        //         iconStyle={{color: tintColor}}
-        //     />
-        // )
     }
 
     getImageFromCamera = async () => {

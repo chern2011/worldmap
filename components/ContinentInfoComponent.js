@@ -160,8 +160,6 @@ class ContinentInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // places: PLACES,
-            // comments: COMMENTS,
             favorite: false,
             showModal: false,
             continent: 1,
@@ -313,13 +311,3 @@ const styles = StyleSheet.create({
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContinentInfo);
 
-
-
-
-/*
-function PlaceInfo(props) {
-    return <RenderPlace place={props.place} />;
-}
-
-export default PlaceInfo;
-*/

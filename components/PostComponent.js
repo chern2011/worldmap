@@ -33,8 +33,6 @@ class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // places: PLACES,
-            // comments: COMMENTS,
             favorite: false,
             showModal: false,
             continent: 1,

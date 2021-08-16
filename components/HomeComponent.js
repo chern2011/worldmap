@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { View, FlatList, Text } from 'react-native';
-// import { ListItem } from 'react-native-elements';
-// import { PLACES } from '../shared/places';
 import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -15,13 +13,6 @@ const mapStateToProps = state => {
 };
 
 class Home extends Component {
-
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         places: PLACES
-    //     };
-    // }
 
     static navigationOptions = {
         title: 'Home'
@@ -67,34 +58,3 @@ class Home extends Component {
 
 export default connect(mapStateToProps)(Home);
 
-
-/*
-import React from 'react';
-import { FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { PLACES } from '../shared/places';
-
-function Directory(props) {
-
-    const renderDirectoryItem = ({item}) => {
-        return (
-            <ListItem
-                title={item.name}
-                subtitle={item.description}
-                onPress={() => props.onPress(item.id)}
-                leftAvatar={{ source: require('./Desktop/React Native Profile Project/React Native Assignment/image/WorldMap.jpg')}}
-            />
-        );
-    };
-
-    return (
-        <FlatList
-            data={props.places}
-            renderItem={renderDirectoryItem}
-            keyExtractor={item => item.id.toString()}
-        />
-    );
-}
-
-export default Directory;
-*/

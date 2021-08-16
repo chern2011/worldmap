@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, FlatList, Image } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements';
-//import { PARTNERS } from '../shared/partners';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
@@ -30,13 +29,6 @@ function Mission () {
 
 class AboutContact extends Component {
 
-    //  constructor(props) {
-    //      super(props);
-    //      this.state = {
-    //          partners: PARTNERS
-    //      };
-    // }
-
     static navigationOptions = {
         title: 'Contact'
     }
@@ -54,25 +46,11 @@ class AboutContact extends Component {
     }
 
     render() {
-        // const renderPartner = ({item}) => {
-        //     return (
-        //         <ListItem
-        //             title={item.name}
-        //             subtitle={item.description}
-        //             leftAvatar={{source: {uri: baseUrl + item.image}}}
-        //         />
-        //     );
-        // };
-
         if (this.props.partners.errMess) {
             return (
                 <ScrollView>
                     <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
                         <Mission />
-                        {/* <Card
-                            title="Community Partners">
-                            <Text>{this.props.partners.errMess}</Text>
-                        </Card> */}
                     </Animatable.View>
                 </ScrollView>
             );
@@ -81,14 +59,6 @@ class AboutContact extends Component {
             <ScrollView>
                 <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
                     <Mission />
-                    {/* <Card
-                        title="Community Partners">
-                        <FlatList
-                            data={this.props.partners.partners}
-                            renderItem={renderPartner}
-                            keyExtractor={item=>item.id.toString()}
-                        />
-                    </Card> */}
                     <Card wrapperStyle={{margin: 20}} title="Contact Information">
                         <Text>1010 Zuffy World</Text>
                         <Text>Gol D. Roger, Raftel 1,500,000,000</Text>

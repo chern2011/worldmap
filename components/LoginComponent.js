@@ -144,29 +144,6 @@ const Loginstack = createStackNavigator(
     }
 );
 
-// const Registerstack = createStackNavigator(
-//     {
-//         Register: { screen: Register }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#1c7506'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//             name='user-plus'
-//             type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
 const PostNavigator = createStackNavigator(
     {
         Post: { screen: Post }
@@ -269,19 +246,6 @@ const MaindrawerNavigator = createDrawerNavigator(
                 )
             }
         },
-        // Register: {
-        //     screen: Registerstack,
-        //     navigationOptions: {
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='list'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
         Reservation: {
             screen: ReservationNavigator,
             navigationOptions: {

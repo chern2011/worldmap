@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
-// import Directory from './DirectoryComponent';
 import ContinentInfo from './ContinentInfoComponent';
 import AboutContact from './AboutContactComponent';
-// import Contact from './ContactComponent';
 import Constants from 'expo-constants';
-import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
 import Login from './LoginComponent';
 import NetInfo from '@react-native-community/netinfo';
-import Post from './PostComponent';
 import { View, Platform, StyleSheet, Text, ScrollView, Image,
     Alert, ToastAndroid } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -20,7 +16,8 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { fetchPlaces, fetchComments, fetchPromotions,
     fetchPartners } from '../redux/ActionCreators';
-    import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+
 const mapDispatchToProps = {
     fetchPlaces,
     fetchComments,
@@ -57,29 +54,6 @@ const HomeNavigator = createStackNavigator(
         }
     );
 
-// const HomeNavigator = createStackNavigator(
-//     {
-//         Home: { screen: Home }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='home'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
 const AboutContactNavigator = createStackNavigator(
     {
         AboutContact: { screen: AboutContact }
@@ -102,75 +76,6 @@ const AboutContactNavigator = createStackNavigator(
         })
     }
 );
-
-// const ContactNavigator = createStackNavigator(
-//     {
-//         Contact: { screen: Contact }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='address-card'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
-// const ReservationNavigator = createStackNavigator(
-//     {
-//         Reservation: { screen: Reservation }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='plane'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     }
-// );
-
-// const PostNavigator = createStackNavigator(
-//     {
-//         Post: { screen: Post }
-//     },
-//     {
-//         defaultNavigationOptions: ({navigation}) => ({
-//             headerStyle: {
-//                 backgroundColor: '#5637DD'
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 color: '#fff'
-//             },
-//             headerLeft: <Icon
-//                 name='list'
-//                 type='font-awesome'
-//                 iconStyle={styles.stackIcon}
-//                 onPress={() => navigation.toggleDrawer()}
-//             />
-//         })
-//     },
-// );
 
 const FavoritesNavigator = createStackNavigator(
     {
@@ -264,47 +169,6 @@ const SideNavigator = createStackNavigator(
                 )
             }
         },
-        // Directory: {
-        //     screen: DirectoryNavigator,
-        //     navigationOptions: {
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='list'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
-        // Reservation: {
-        //     screen: ReservationNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'Reserve Flight',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='plane'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
-        // Post: {
-        //     screen: PostNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'Post Your Experience',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='camera'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // },
         Favorites: {
             screen: FavoritesNavigator,
             navigationOptions: {
@@ -333,20 +197,6 @@ const SideNavigator = createStackNavigator(
                 )
             }
         }
-        // Contact: {
-        //     screen: ContactNavigator,
-        //     navigationOptions: {
-        //         drawerLabel: 'Contact Us',
-        //         drawerIcon: ({tintColor}) => (
-        //             <Icon
-        //                 name='address-card'
-        //                 type='font-awesome'
-        //                 size={24}
-        //                 color={tintColor}
-        //             />
-        //         )
-        //     }
-        // }
     },
     {
         initialRouteName: 'Home',
