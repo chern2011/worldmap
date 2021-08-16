@@ -3,6 +3,7 @@ import Home from './HomeComponent';
 // import Directory from './DirectoryComponent';
 import ContinentInfo from './ContinentInfoComponent';
 import AboutContact from './AboutContactComponent';
+import Profile from './ProfileComponent';
 // import Contact from './ContactComponent';
 import Constants from 'expo-constants';
 import Reservation from './ReservationComponent';
@@ -20,7 +21,8 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { fetchPlaces, fetchComments, fetchPromotions,
     fetchPartners } from '../redux/ActionCreators';
-    import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+
 const mapDispatchToProps = {
     fetchPlaces,
     fetchComments,
@@ -178,9 +180,32 @@ const HomeNavigator = createBottomTabNavigator(
 //     }
 // );
 
-const FavoritesNavigator = createBottomTabNavigator(
+// const FavoritesNavigator = createBottomTabNavigator(
+//     {
+//         Favorites: { screen: Favorites }
+//     },
+//     {
+//         defaultNavigationOptions: ({navigation}) => ({
+//             headerStyle: {
+//                 backgroundColor: '#5637DD'
+//             },
+//             headerTintColor: '#fff',
+//             headerTitleStyle: {
+//                 color: '#fff'
+//             },
+//             headerLeft: <Icon
+//                 name='heart'
+//                 type='font-awesome'
+//                 iconStyle={styles.stackIcon}
+//                 onPress={() => navigation.toggleDrawer()}
+//             />
+//         })
+//     }
+// );
+
+const LoginNavigator = createBottomTabNavigator(
     {
-        Favorites: { screen: Favorites }
+        Login: { screen: Login }
     },
     {
         defaultNavigationOptions: ({navigation}) => ({
@@ -192,7 +217,7 @@ const FavoritesNavigator = createBottomTabNavigator(
                 color: '#fff'
             },
             headerLeft: <Icon
-                name='heart'
+                name='sign-in'
                 type='font-awesome'
                 iconStyle={styles.stackIcon}
                 onPress={() => navigation.toggleDrawer()}
@@ -201,9 +226,9 @@ const FavoritesNavigator = createBottomTabNavigator(
     }
 );
 
-const LoginNavigator = createBottomTabNavigator(
+const ProfileNavigator = createBottomTabNavigator(
     {
-        Login: { screen: Login }
+        Profile: { screen: Profile }
     },
     {
         defaultNavigationOptions: ({navigation}) => ({
@@ -297,13 +322,12 @@ const MainNavigator = createBottomTabNavigator(
         //         )
         //     }
         // },
-        Favorites: {
-            screen: FavoritesNavigator,
+        Profile: {
+            screen: ProfileNavigator,
             navigationOptions: {
-                drawerLabel: 'My Favorites',
                 drawerIcon: ({tintColor}) => (
                     <Icon
-                        name='heart'
+                        name='sign-in'
                         type='font-awesome'
                         size={24}
                         color={tintColor}
@@ -311,6 +335,20 @@ const MainNavigator = createBottomTabNavigator(
                 )
             }
         },
+        // Favorites: {
+        //     screen: FavoritesNavigator,
+        //     navigationOptions: {
+        //         drawerLabel: 'My Favorites',
+        //         drawerIcon: ({tintColor}) => (
+        //             <Icon
+        //                 name='heart'
+        //                 type='font-awesome'
+        //                 size={24}
+        //                 color={tintColor}
+        //             />
+        //         )
+        //     }
+        // },
         // AboutContact: {
         //     screen: AboutContactNavigator,
         //     navigationOptions: {
@@ -424,6 +462,7 @@ class Main extends Component {
                 flex: 1,
                 paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
             }}>
+                
                 <AppNavigator />
             </View>
         );
