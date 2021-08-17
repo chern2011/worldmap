@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList,
     Modal, Button, StyleSheet, Picker,
-    Alert, PanResponder, Share } from 'react-native';
+    Alert, PanResponder, Share, Image } from 'react-native';
 import { Card, Icon, Input, Rating } from 'react-native-elements';
 import { PLACES } from '../shared/places';
+import * as SecureStore from 'expo-secure-store';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import { COMMENTS } from '../shared/comments';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -20,7 +23,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     postFavorite: placeId => (postFavorite(placeId)),
-    postComment: (placeId, rating, author, text) => (postComment(placeId, rating, author, text))
+    postComment: (placeId, image, rating, continent, country, author, text) => (postComment(placeId, image, rating, continent, country, author, text))
 };
 
 function RenderPlace(props) {
@@ -126,17 +129,19 @@ function RenderPlace(props) {
 }
 
 function RenderComments({comments}) {
-
     const renderCommentItem = ({item}) => {
         return (
             <View style={{margin: 10}}>
                 <Text style={{fontSize: 14}}>{item.text}</Text>
                 <Rating
                     startingValue={item.rating}
+                    ratingCount={10}
                     imageSize={10}
                     style={{alignItems:'flex-start', paddingVertical:'5%'}}
-                    readonly
+                    type={'rocket'}
+                    fractions={1}
                 />
+                <Text style={{fontSize: 14}}>{`Continent: ${item.continent}`}, {`Country: ${item.country}`}</Text>
                 <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
             </View>
         );
@@ -162,11 +167,13 @@ class ContinentInfo extends Component {
         this.state = {
             favorite: false,
             showModal: false,
-            continent: 1,
+            imageUrl: baseUrl + 'images/Maincontactphoto.jpg',
+            rating: '',
+            continent: '',
             country: '',
-            rating: 5,
-            author: "",
-            text: ""
+            author: '',
+            text: '',
+            
         };
     }
 
@@ -174,19 +181,21 @@ class ContinentInfo extends Component {
         this.setState({showModal: !this.state.showModal});
     }
     
-    handleComment(placeId, rating, author, text) { 
-        this.props.postComment(placeId, rating, author, text)
+    handleComment(placeId, image, rating, continent, country, author, text) { 
+        this.props.postComment(placeId, image, rating, continent, country, author, text)
         this.toggleModal();
     }
 
     resetForm() {
         this.setState({
             showModal: false,
-            continent: 1,
+            imageUrl: baseUrl + 'images/Maincontactphoto.jpg',
+            rating: '',
+            continent: '',
             country: '',
-            rating: 5,
             author: '',
-            text: ''
+            text: '',
+            
         })
     }
 
@@ -198,6 +207,48 @@ class ContinentInfo extends Component {
         this.props.postFavorite(placeId);
     }
 
+    getImageFromCamera = async () => {
+        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+            const capturedImage = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.processImage(capturedImage.uri);
+            }
+        }
+    }
+
+    processImage = async (imgUri) => {
+        const processedImage = await ImageManipulator.manipulateAsync(imgUri, [ {resize: {width: 400} } ],
+            { format: ImageManipulator.SaveFormat.PNG }
+        );
+            console.log(processedImage);
+            this.setState({imageUrl: processedImage.uri});
+            MediaLibrary.saveToLibraryAsync(processedImage);
+        
+    }
+
+    getImageFromGallery = async () => {
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraRollPermission.status === 'granted') {
+            const capturedImage = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [1, 1]
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.processImage(capturedImage.uri);
+            }
+        }
+    }
+    
     render() {
         const placeId = this.props.navigation.getParam('placeId');
         const place = this.props.places.places.filter(place => place.id === placeId)[0];
@@ -216,11 +267,31 @@ class ContinentInfo extends Component {
                     visible={this.state.showModal}
                     onRequestClose={() => this.toggleModal()}
                 >
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={{uri: this.state.imageUrl}}
+                            loadingIndicatorSource={require('./images/Maincontactphoto.jpg')}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Button
+                            title='Camera'
+                            onPress={this.getImageFromCamera}
+                        />
+                        <Button
+                            title='Gallery'
+                            onPress={this.getImageFromGallery}
+                        />
+                    </View>
                     <View style={styles.modal}>
                         <Rating
                             showRating
+                            ratingCount={10}
                             startingValue = {5}
-                            imageSize = {40}
+                            imageSize = {30}
+                            type={'rocket'}
+                            fractions={1}
                             onFinishRating={rating => this.setState({rating: rating})} 
                             style={{paddingVertical: 10}}
                         />
@@ -268,7 +339,7 @@ class ContinentInfo extends Component {
                             title = 'Submit'
                             color = '#5637DD'
                             onPress={() => {
-                                this.handleComment(placeId, this.state.rating, this.state.author, this.state.text );
+                                this.handleComment( placeId, this.state.image,this.state.rating, this.state.continent, this.state.country, this.state.author, this.state.text );
                                 this.resetForm();
                             }}
                         />
@@ -306,7 +377,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: 80,
         marginLeft: 80
-    }
+    },
+    image: {
+        width: "100%",
+        height: 100
+    },
+    row: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContinentInfo);

@@ -16,6 +16,7 @@ import { createAppContainer } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import * as Animatable from 'react-native-animatable';
 
 class Login extends Component {
 
@@ -64,7 +65,7 @@ class Login extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <Animatable.View animation='fadeInLeftBig' duration={2000} style={styles.container}>
                 <Input
                     placeholder='Username'
                     leftIcon={{type: 'font-awesome', name: 'user-o'}}
@@ -107,10 +108,10 @@ class Login extends Component {
                                 iconStyle={{marginRight: 10}}
                             />
                         }
-                        buttonStyle={{backgroundColor: '#5637DD'}}
+                        buttonStyle={{backgroundColor: 'darkgreen'}}
                     />
                 </View>
-            </View>
+            </Animatable.View>
         );
     }
 }
@@ -216,14 +217,14 @@ const ReservationNavigator = createStackNavigator(
 const CustomDrawerComponent = props => (
     <ScrollView>
         <SafeAreaView 
-            style={styles.container}
+            style={styles.containerdrawer}
             forceInset={{top: 'always', horizontal: 'never'}}>
             <View style={styles.drawerHeader}>
                 <View style={{flex: 1}}>
                     <Image source={require('./images/WorldMap.jpg')} style={styles.drawerImage} />
                 </View>
                 <View style={{flex: 2}}>
-                    <Text style={styles.drawerHeaderText}>NuCamp</Text>
+                    <Text style={styles.drawerHeaderText}>World Map</Text>
                 </View>
             </View>
             <DrawerItems {...props} />
@@ -314,6 +315,10 @@ class Login2 extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        margin: 30,
+    },
+    containerdrawer: {
         flex: 1,
     },
     drawerHeader: {

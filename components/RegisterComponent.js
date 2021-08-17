@@ -19,7 +19,7 @@ class Register extends Component {
             lastname: '',
             email: '',
             remember: false,
-            imageUrl: baseUrl + 'images/logo.png'
+            imageUrl: baseUrl + 'images/BeachR.jpg'
         };
     }
 
@@ -33,12 +33,38 @@ class Register extends Component {
 
         if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
             const capturedImage = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.processImage(capturedImage.uri);
+            }
+        }
+    }
+
+    processImage = async (imgUri) => {
+        const processedImage = await ImageManipulator.manipulateAsync(imgUri, [ {resize: {width: 400} } ],
+            { format: ImageManipulator.SaveFormat.PNG }
+        );
+            console.log(processedImage);
+            this.setState({imageUrl: processedImage.uri});
+            MediaLibrary.saveToLibraryAsync(processedImage);
+        
+    }
+
+    getImageFromGallery = async () => {
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraRollPermission.status === 'granted') {
+            const capturedImage = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
                 aspect: [1, 1]
             });
             if (!capturedImage.cancelled) {
                 console.log(capturedImage);
-                this.setState({imageUrl: capturedImage.uri});
+                this.processImage(capturedImage.uri);
             }
         }
     }
@@ -67,10 +93,16 @@ class Register extends Component {
                             style={styles.image}
                         />
                     </View>
-                    <View>
+                    <View style={styles.row}>
                         <Button
                             title='Camera'
                             onPress={this.getImageFromCamera}
+                            buttonStyle={{backgroundColor: '#6495ed'}}
+                        />
+                        <Button
+                            title='Gallery'
+                            onPress={this.getImageFromGallery}
+                            buttonStyle={{backgroundColor: '#6495ed'}}
                         />
                     </View>
                     <Input
@@ -78,7 +110,6 @@ class Register extends Component {
                         leftIcon={{type: 'font-awesome', name: 'user-o'}}
                         onChangeText={username => this.setState({username})}
                         value={this.state.username}
-                        containerStyle={styles.formInput}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
@@ -86,7 +117,6 @@ class Register extends Component {
                         leftIcon={{type: 'font-awesome', name: 'key'}}
                         onChangeText={password => this.setState({password})}
                         value={this.state.password}
-                        containerStyle={styles.formInput}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
@@ -94,7 +124,6 @@ class Register extends Component {
                         leftIcon={{type: 'font-awesome', name: 'user-o'}}
                         onChangeText={firstname => this.setState({firstname})}
                         value={this.state.firstname}
-                        containerStyle={styles.formInput}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
@@ -102,7 +131,6 @@ class Register extends Component {
                         leftIcon={{type: 'font-awesome', name: 'user-o'}}
                         onChangeText={lastname => this.setState({lastname})}
                         value={this.state.lastname}
-                        containerStyle={styles.formInput}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
@@ -110,7 +138,6 @@ class Register extends Component {
                         leftIcon={{type: 'font-awesome', name: 'envelope-o'}}
                         onChangeText={email => this.setState({email})}
                         value={this.state.email}
-                        containerStyle={styles.formInput}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <CheckBox
@@ -120,7 +147,7 @@ class Register extends Component {
                         onPress={() => this.setState({remember: !this.state.remember})}
                         containerStyle={styles.formCheckbox}
                     />
-                    <View style={styles.formButton}>
+                    <View>
                         <Button
                             onPress={() => this.handleRegister()}
                             title='Register'
@@ -132,7 +159,7 @@ class Register extends Component {
                                     iconStyle={{marginRight: 10}}
                                 />
                             }
-                            buttonStyle={{backgroundColor: '#5637DD'}}
+                            buttonStyle={{backgroundColor: 'darkgreen'}}
                         />
                     </View>
                 </View>
@@ -144,22 +171,15 @@ class Register extends Component {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        margin: 10
+        marginRight: 30,
+        marginLeft: 30
     },
     formIcon: {
         marginRight: 10
     },
-    formInput: {
-        padding: 8
-    },
     formCheckbox: {
         margin: 8,
         backgroundColor: null
-    },
-    formButton: {
-        margin: 20,
-        marginRight: 40,
-        marginLeft: 40
     },
     imageContainer: {
         flex: 1,
@@ -168,9 +188,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         margin: 10
     },
+    row: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+    },
     image: {
         width: "100%",
-        height: 60
+        height: 100
     }
 });
 

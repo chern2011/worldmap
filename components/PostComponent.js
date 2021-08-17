@@ -64,7 +64,7 @@ class Post extends Component {
     }
 
     static navigationOptions = {
-        title: 'Continents Information'
+        title: 'Post Your Experience'
     }
 
     markFavorite(placeId) {
@@ -90,25 +90,29 @@ class Post extends Component {
     render() {
        return (
             <ScrollView>
-                    <View style={styles.modal}>
-                        <View style={styles.imageContainer}>
-                            <Image
-                                source={{uri: this.state.imageUrl}}
-                                loadingIndicatorSource={require('./images/Maincontactphoto.jpg')}
-                                style={styles.image}
-                            />
-                        </View>
-                        <View style={styles.imageContainer}>
-                            <Button
-                                title='Camera'
-                                onPress={this.getImageFromCamera}
-                            />
-                        </View>
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={{uri: this.state.imageUrl}}
+                            loadingIndicatorSource={require('./images/Maincontactphoto.jpg')}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View>
+                        <Button
+                            title='Camera'
+                            onPress={this.getImageFromCamera}
+                        />
+                        <Button
+                            title='Gallery'
+                            onPress={this.getImageFromGallery}
+                        />
+                    </View>
+                    <View style={styles.row}>
                         <Rating
-                            showRating 
+                            showRating
                             ratingCount={10}
                             startingValue = {5}
-                            imageSize = {20}
+                            imageSize = {30}
                             type={'rocket'}
                             fractions={1}
                             onFinishRating={rating => this.setState({rating: rating})} 
@@ -131,10 +135,19 @@ class Post extends Component {
                             placeholder='Country'
                             leftIcon={{
                                 type: 'font-awesome', 
-                                name: 'building-o'}}
+                                name: 'comment-o'}}
                             leftIconContainerStyle={{paddingRight:10}}
                             onChangeText={(country)=>this.setState({country: country})}
                             value={this.state.country}
+                        />
+                        <Input
+                            placeholder='Author'
+                            leftIcon={{ 
+                                type: 'font-awesome', 
+                                name: 'user-o'}}
+                            leftIconContainerStyle={{paddingRight:10}}
+                            onChangeText={(author)=>this.setState({author: author})}
+                            value={this.state.author}
                         />
                         <Input
                             placeholder='Comment'
@@ -145,27 +158,14 @@ class Post extends Component {
                             onChangeText={(text)=>this.setState({text: text})}
                             value={this.state.text}
                         />
-                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center',}}>
-                            <Button
-                                style = {{paddingLeft: 10}}
-                                title = 'Post'
-                                color = '#5637DD'
-                                onPress={() => {
-                                    this.handleComment(placeId, this.state.rating, this.state.author, this.state.text );
-                                    this.resetForm();
-                                }}
-                            />
-                            <Button
-                                title = 'Reset'
-                                color = 'red'
-                                onPress={() => {
-                                    this.toggleModal();
-                                    this.resetForm();
-                                }}
-                                color='#808080'
-                                title='Cancel'
-                            />
-                        </View>
+                        <Button
+                            title = 'Post'
+                            color = '#5637DD'
+                            onPress={() => {
+                                this.handleComment(placeId, this.state.rating, this.state.author, this.state.text );
+                                this.resetForm();
+                            }}
+                        />
                     </View>
             </ScrollView>
         );
@@ -178,11 +178,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1,
         flexDirection: 'row',
-        margin: 20
+        marginRight: 20,
+        marginLeft: 20
     },
-    modal: { 
-        justifyContent: 'center',
-        margin: 20
+    row: {
+        marginRight: 20,
+        marginLeft: 20
     },
     formItem2: {
         alignItems: 'center',

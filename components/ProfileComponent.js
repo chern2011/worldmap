@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import Favorites from './FavoritesComponent';
+import { View, Text, StyleSheet} from 'react-native';
 import { Card } from 'react-native-elements';
+import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import Rightsidetab from './RightsidetabComponent';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -42,27 +48,6 @@ function RenderPlace(props) {
 }
 
 class Profile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            scaleValue: new Animated.Value(0)
-        };
-    }
-
-    animate() {
-        Animated.timing(
-            this.state.scaleValue,
-            {
-                toValue: 1,
-                duration: 1500,
-                useNativeDriver: true
-            }
-        ).start();
-    }
-
-    componentDidMount() {
-        this.animate();
-    }
 
     static navigationOptions = {
         title: 'Profile'
@@ -70,8 +55,10 @@ class Profile extends Component {
 
     render() {
         return (
-            <Animated.ScrollView style={{transform: [{scale: this.state.scaleValue}]}}>
+            <Animatable.View animation='fadeInRightBig' duration={2000}>
+                <View>
 
+                </View>
                 <RenderPlace
                     item={this.props.places.places.filter(place => place.featured)[0]}
                     isLoading={this.props.places.isLoading}
@@ -87,7 +74,7 @@ class Profile extends Component {
                     isLoading={this.props.partners.isLoading}
                     errMess={this.props.partners.errMess}
                 />
-            </Animated.ScrollView>
+            </Animatable.View>
         );
     }
 }

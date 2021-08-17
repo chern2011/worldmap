@@ -165,10 +165,10 @@ const MainNavigator = createBottomTabNavigator(
     },
     {
         tabBarOptions: {
-            activeBackgroundColor: '#5637DD',
-            inactiveBackgroundColor: '#CEC8FF',
-            activeTintColor: '#fff',
-            inactiveTintColor: '#808080',
+            activeBackgroundColor: 'darkgreen',
+            inactiveBackgroundColor: 'lightgreen',
+            activeTintColor: 'blue',
+            inactiveTintColor: 'darkblue',
             labelStyle: {fontSize: 16}
         }
     },

@@ -21,7 +21,7 @@ function Mission () {
                 reccommendation where people have gone or planning to visit.
             </Text>
             <ScrollView style={{flex: 1}}>
-            <Image style={{width: "100%", height: 250}} source={require('./images/Maincontactphoto.jpg')} />
+            <Image style={{width: "100%", height: 250}} source={require('./images/Waterfall.jpg')} />
             </ScrollView>
         </Card>
     )

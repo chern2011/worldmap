@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet,
-    Picker, Switch, Button, Modal, Alert } from 'react-native';
+    Picker, Switch, Button, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Animatable from 'react-native-animatable';
 import * as Notifications from 'expo-notifications';
@@ -12,21 +12,16 @@ class Reservation extends Component {
         super(props);
 
         this.state = {
-            Continents: 1,
+            Continents: 'Africa',
             visitors: 1,
             TourGuide: false,
             date: new Date(),
-            showCalendar: false,
-            showModal: false
+            showCalendar: false
         };
     }
 
     static navigationOptions = {
         title: 'Reserve Flight'
-    }
-
-    toggleModal() {
-        this.setState({showModal: !this.state.showModal});
     }
 
     handleReservation() {
@@ -38,11 +33,6 @@ class Reservation extends Component {
             '\nTourGuide ' + this.state.TourGuide +
             '\nDate ' + this.state.date,
             [
-                {
-                    text: 'Cancel',
-                    onPress: () => this.resetForm(),
-                    style: 'cancel'
-                },
                 {
                     text: 'OK', 
                     onPress: () => {
@@ -57,12 +47,11 @@ class Reservation extends Component {
 
     resetForm() {
         this.setState({
-            continents: 1,
+            continents: 'Africa',
             visitors: 1,
             TourGuide: false,
             date: new Date(),
-            showCalendar: false,
-            showModal: false
+            showCalendar: false
         });
     }
 
@@ -180,6 +169,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1,
         flexDirection: 'row',
+        marginRight: 30,
+        marginLeft: 30,
         margin: 20
     },
     formLabel: {
@@ -191,22 +182,6 @@ const styles = StyleSheet.create({
     },
     formItem2: {
         flex: 2
-    },
-    modal: { 
-        justifyContent: 'center',
-        margin: 20
-    },
-    modalTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        backgroundColor: '#5637DD',
-        textAlign: 'center',
-        color: '#fff',
-        marginBottom: 20
-    },
-    modalText: {
-        fontSize: 18,
-        margin: 10
     }
 });
 

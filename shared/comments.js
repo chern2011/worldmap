@@ -4,6 +4,7 @@ export const COMMENTS =
         id: 0,
         placeId: 0,
         rating: 5, 
+        image: "/assets/images/Australiamap.jpg",
         text: "What a magnificent view!",
         author: "Tinus Lorvaldes",
         date: "2018-10-25T16:30Z"
