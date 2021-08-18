@@ -130,9 +130,8 @@ function RenderComments({comments}) {
     const renderCommentItem = ({item}) => {
         return (
             <View style={{margin: 10}}>
-               
-                    <Image source={{uri: 'https://reactjs.org/logo-og.png'}}
-                        style={{width: "100%", height: 200}} />
+                    <Image source={require('./images/Maincontactphoto.jpg')}
+                        style={{width: "100%", height: 150}} />
                     <Rating
                         startingValue={item.rating}
                         ratingCount={10}
@@ -144,7 +143,7 @@ function RenderComments({comments}) {
                         readonly
                     />                
                     <Text style={{fontSize: 14}}>{item.text}</Text>
-                    <Text style={{fontSize: 14}}>{item.country}</Text>
+                    <Text style={{fontSize: 14}}>{`${item.country}`}</Text>
                     <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
                 
             </View>
@@ -274,7 +273,7 @@ class ContinentInfo extends Component {
                             loadingIndicatorSource={require('./images/Maincontactphoto.jpg')}
                             style={styles.image}
                             onChangeText={(image)=>this.setState({image: image})}
-                            value={this.state.image}
+                            value={{uri: this.state.imageUrl}}
                         />
                     </View>
                     <View style={styles.row}>
@@ -329,7 +328,7 @@ class ContinentInfo extends Component {
                             title = 'Submit'
                             color = '#5637DD'
                             onPress={() => {
-                                this.handleComment( placeId, this.state.rating, this.state.author, this.state.text, this.state.country, this.state.image);
+                                this.handleComment( placeId, this.state.rating, this.state.author, this.state.text, this.state.country, {uri: this.state.imageUrl});
                                 this.resetForm();
                             }}
                         />

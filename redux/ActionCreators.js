@@ -158,12 +158,14 @@ export const deleteFavorite = placeId => ({
     payload: placeId
 }); 
 
-export const postComment = (placeId, rating, author, text) => (dispatch) => {
+export const postComment = (placeId, rating, author, text, country, image) => (dispatch) => {
     const newComment = {
         placeId,
         rating,
         author,
-        text
+        text,
+        country,
+        image
     }
     newComment.date = new Date().toISOString();
 
