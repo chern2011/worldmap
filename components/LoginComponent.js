@@ -4,18 +4,14 @@ import AboutContact from './AboutContactComponent';
 import Post from './PostComponent';
 import Reservation from './ReservationComponent';
 import Constants from 'expo-constants';
-import { View, Platform, StyleSheet, Text, ScrollView, Image,
-    Alert, ToastAndroid } from 'react-native';
+import { View, Platform, StyleSheet, Text, ScrollView, Image
+     } from 'react-native';
 import { Input, CheckBox, Button, Icon } from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
-import { connect } from 'react-redux';
-import { baseUrl } from '../shared/baseUrl';
 import * as Animatable from 'react-native-animatable';
 
 class Login extends Component {
@@ -68,7 +64,7 @@ class Login extends Component {
             <Animatable.View animation='fadeInLeftBig' duration={2000} style={styles.container}>
                 <Input
                     placeholder='Username'
-                    leftIcon={{type: 'font-awesome', name: 'user-o'}}
+                    leftIcon={{type: 'font-awesome', name: 'child'}}
                     onChangeText={username => this.setState({username})}
                     value={this.state.username}
                     containerStyle={styles.formInput}
@@ -76,7 +72,7 @@ class Login extends Component {
                 />
                 <Input
                     placeholder='Password'
-                    leftIcon={{type: 'font-awesome', name: 'key'}}
+                    leftIcon={{type: 'font-awesome', name: 'lock'}}
                     onChangeText={password => this.setState({password})}
                     value={this.state.password}
                     containerStyle={styles.formInput}

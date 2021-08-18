@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList,
-    Modal, Button, StyleSheet, Picker,
-    Alert, PanResponder, Share, Image } from 'react-native';
-import { Card, Icon, Input, Rating } from 'react-native-elements';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import * as Animatable from 'react-native-animatable';
-import * as Notifications from 'expo-notifications';
-import * as SecureStore from 'expo-secure-store';
+import { View, ScrollView, Button, StyleSheet, 
+    Picker, Image } from 'react-native';
+import { Input, Rating } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { AndroidNotificationPriority } from 'expo-notifications';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postComment } from '../redux/ActionCreators';
@@ -37,7 +29,7 @@ class Post extends Component {
             showModal: false,
             continent: 1,
             country: '',
-            rating: 5,
+            rating: 10,
             text: "",
             imageUrl: baseUrl + 'images/Maincontactphoto.jpg'
         };
@@ -57,7 +49,7 @@ class Post extends Component {
             showModal: false,
             continent: 1,
             country: '',
-            rating: 5,
+            rating: 10,
             text: '',
             imageUrl: baseUrl + 'images/Maincontactphoto.jpg'
         })
@@ -135,7 +127,7 @@ class Post extends Component {
                             placeholder='Country'
                             leftIcon={{
                                 type: 'font-awesome', 
-                                name: 'comment-o'}}
+                                name: 'flag'}}
                             leftIconContainerStyle={{paddingRight:10}}
                             onChangeText={(country)=>this.setState({country: country})}
                             value={this.state.country}
@@ -144,16 +136,16 @@ class Post extends Component {
                             placeholder='Author'
                             leftIcon={{ 
                                 type: 'font-awesome', 
-                                name: 'user-o'}}
+                                name: 'address-card'}}
                             leftIconContainerStyle={{paddingRight:10}}
                             onChangeText={(author)=>this.setState({author: author})}
                             value={this.state.author}
                         />
                         <Input
-                            placeholder='Comment'
+                            placeholder='Comments'
                             leftIcon={{
                                 type: 'font-awesome', 
-                                name: 'comment-o'}}
+                                name: 'comments'}}
                             leftIconContainerStyle={{paddingRight:10}}
                             onChangeText={(text)=>this.setState({text: text})}
                             value={this.state.text}

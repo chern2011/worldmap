@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Favorites from './FavoritesComponent';
-import { View, Text, StyleSheet} from 'react-native';
-import { Card } from 'react-native-elements';
 import Constants from 'expo-constants';
-import { connect } from 'react-redux';
-import { baseUrl } from '../shared/baseUrl';
-import Loading from './LoadingComponent';
-import { createAppContainer } from 'react-navigation';
+import { View, Text, Platform, StyleSheet, ScrollView, 
+    Image, } from 'react-native';
+import { Card, Icon } from 'react-native-elements';
 import { createStackNavigator } from 'react-navigation-stack';
-import Rightsidetab from './RightsidetabComponent';
+import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
+import { createAppContainer } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
+import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
@@ -19,34 +19,6 @@ const mapStateToProps = state => {
     };
 };
 
-function RenderPlace(props) {
-    const {item} = props;
-
-    if (props.isLoading) {
-        return <Loading />;
-    }
-    if (props.errMess) {
-        return (
-            <View>
-                <Text>{props.errMess}</Text>
-            </View>
-        );
-    }
-    if (item) {
-        return (
-            <Card
-                featuredTitle={item.name}
-                image={{uri: baseUrl + item.image}}
-            >
-                <Text style={{margin: 10}}>
-                    {item.description}
-                </Text>
-            </Card>
-        );
-    }
-    return <View />;
-}
-
 class Profile extends Component {
 
     static navigationOptions = {
@@ -56,25 +28,137 @@ class Profile extends Component {
     render() {
         return (
             <Animatable.View animation='fadeInRightBig' duration={2000}>
-                <View>
+            <ScrollView>   
+                <Card>
+                <Image style={styles.Image} source={require('./images/Maincontactphoto.jpg')} />
+                <Text style={styles.PicText}>Hello</Text>
+                </Card>
+                <Card>
+                <Image style={styles.Image} source={require('./images/Maincontactphoto.jpg')} />
+                <Text style={styles.PicText}>Hello</Text>
+                </Card>
+                <Card>
+                <Image style={styles.Image} source={require('./images/Maincontactphoto.jpg')} />
+                <Text style={styles.PicText}>Hello</Text>
+                </Card>
+            </ScrollView>
+         </Animatable.View>
+    );
+    }
+}
 
+const ProfileNavigator = createStackNavigator(
+    {
+        Profile: { screen: Profile }
+    },
+    {
+        defaultNavigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: '#1c7506'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            },
+            headerRight: <Icon
+                name='address-card'
+                type='font-awesome'
+                iconStyle={styles.stackIcon}
+                onPress={() => navigation.toggleDrawer()}
+            />
+        })
+    },
+);
+
+    const FavoritesNavigator = createStackNavigator(
+        {
+            Favorites: { screen: Favorites }
+        },
+        {
+            defaultNavigationOptions: ({navigation}) => ({
+                headerStyle: {
+                    backgroundColor: '#1c7506'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                },
+                headerRight: <Icon
+                    name='heart'
+                    type='font-awesome'
+                    iconStyle={styles.stackIcon}
+                    onPress={() => navigation.toggleDrawer()}
+                />
+            })
+        }
+    );
+
+    const CustomDrawer = props => (
+        <ScrollView>
+            <SafeAreaView 
+                style={styles.container}
+                forceInset={{top: 'always', horizontal: 'never'}}>
+                <View style={styles.drawerHeader}>
+                    <View style={{flex: 1}}>
+                        <Image source={require('./images/WorldMap.jpg')} style={styles.drawerImage} />
+                    </View>
+                    <View style={{flex: 2}}>
+                        <Text style={styles.drawerHeaderText}>NuCamp</Text>
+                    </View>
                 </View>
-                <RenderPlace
-                    item={this.props.places.places.filter(place => place.featured)[0]}
-                    isLoading={this.props.places.isLoading}
-                    errMess={this.props.places.errMess}
-                />
-                <RenderPlace
-                    item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
-                    isLoading={this.props.promotions.isLoading}
-                    errMess={this.props.promotions.errMess}
-                />
-                <RenderPlace
-                    item={this.props.partners.partners.filter(partner => partner.featured)[0]}
-                    isLoading={this.props.partners.isLoading}
-                    errMess={this.props.partners.errMess}
-                />
-            </Animatable.View>
+                <DrawerItems {...props} />
+            </SafeAreaView>
+        </ScrollView>
+    ); 
+
+    const RightsideNavigator = createDrawerNavigator(
+        {
+            Profile: {
+                screen: ProfileNavigator,
+                navigationOptions: {
+                    drawerIcon: ({tintColor}) => (
+                        <Icon
+                            name='address-card'
+                            type='font-awesome'
+                            size={24}
+                            color={tintColor}
+                        />
+                    )
+                }
+            },
+        Favorite: {
+                screen: FavoritesNavigator,
+                navigationOptions: {
+                    drawerIcon: ({tintColor}) => (
+                        <Icon
+                            name='heart'
+                            type='font-awesome'
+                            size={24}
+                            color={tintColor}
+                        />
+                    )
+                }
+            },
+        },
+        {
+            initialRouteName: 'Profile',
+            drawerBackgroundColor: '#CEC8FF',
+            drawerPosition: "right",
+            contentComponent: CustomDrawer
+        }
+    );
+
+const Apps3Navigator = createAppContainer(RightsideNavigator)
+class Profile2 extends Component {
+
+    render() {
+        return (
+            <View style={{
+                flex: 1,
+                paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
+            }}>
+                <Apps3Navigator />
+            </View>
         );
     }
 }
@@ -97,6 +181,12 @@ class Profile extends Component {
             fontSize: 24,
             fontWeight: 'bold'
         },
+        PicText: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 20,
+            margin: 10,
+        },
         drawerImage: {
             margin: 10,
             height: 65,
@@ -106,7 +196,14 @@ class Profile extends Component {
             marginRight: 10,
             color: '#fff',
             fontSize: 24
-        }
+        },
+        Image: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: 10,
+            height: 200,
+            width: "100%",
+        },
     });
     
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps)(Profile2);

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, FlatList, Image } from 'react-native';
-import { Card, ListItem, Button, Icon } from 'react-native-elements';
+import { ScrollView, Text, Image } from 'react-native';
+import { Card, Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { baseUrl } from '../shared/baseUrl';
-import Loading from './LoadingComponent';
 import * as Animatable from 'react-native-animatable';
 import * as MailComposer from 'expo-mail-composer';
 
@@ -67,7 +65,7 @@ class AboutContact extends Component {
                         <Text>Email: chern2011@gmail.com</Text>
                         <Button
                             title="Send Email"
-                            buttonStyle={{backgroundColor: '#5637DD', margin: 40}}
+                            buttonStyle={{backgroundColor: 'pink', margin: 40}}
                             icon={<Icon
                                 name='envelope-o'
                                 type='font-awesome'

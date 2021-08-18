@@ -4,7 +4,6 @@ import { Text, View, ScrollView, StyleSheet,
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Animatable from 'react-native-animatable';
 import * as Notifications from 'expo-notifications';
-import { AndroidNotificationPriority } from 'expo-notifications';
 
 class Reservation extends Component {
 
@@ -134,7 +133,6 @@ class Reservation extends Component {
                                 this.setState({showCalendar: !this.state.showCalendar})
                             }
                             title={this.state.date.toLocaleDateString('en-US')}
-                            color='#5637DD'
                             accessibilityLabel='Tap me to select a reservation date'
                         />
                     </View>
@@ -153,7 +151,6 @@ class Reservation extends Component {
                         <Button
                             onPress={() => this.handleReservation()}
                             title='Search'
-                            color='#5637DD'
                             accessibilityLabel='Tap me to search for available flight to reserve'
                         />
                     </View>

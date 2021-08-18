@@ -4,7 +4,6 @@ import { Input, CheckBox, Button, Icon } from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { baseUrl } from '../shared/baseUrl';
 
 class Register extends Component {
@@ -107,35 +106,35 @@ class Register extends Component {
                     </View>
                     <Input
                         placeholder='Username'
-                        leftIcon={{type: 'font-awesome', name: 'user-o'}}
+                        leftIcon={{type: 'font-awesome', name: 'child'}}
                         onChangeText={username => this.setState({username})}
                         value={this.state.username}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
                         placeholder='Password'
-                        leftIcon={{type: 'font-awesome', name: 'key'}}
+                        leftIcon={{type: 'font-awesome', name: 'lock'}}
                         onChangeText={password => this.setState({password})}
                         value={this.state.password}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
                         placeholder='First Name'
-                        leftIcon={{type: 'font-awesome', name: 'user-o'}}
+                        leftIcon={{type: 'font-awesome', name: 'address-card'}}
                         onChangeText={firstname => this.setState({firstname})}
                         value={this.state.firstname}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
                         placeholder='Last Name'
-                        leftIcon={{type: 'font-awesome', name: 'user-o'}}
+                        leftIcon={{type: 'font-awesome', name: 'user'}}
                         onChangeText={lastname => this.setState({lastname})}
                         value={this.state.lastname}
                         leftIconContainerStyle={styles.formIcon}
                     />
                     <Input
                         placeholder='Email'
-                        leftIcon={{type: 'font-awesome', name: 'envelope-o'}}
+                        leftIcon={{type: 'font-awesome', name: 'envelope-square'}}
                         onChangeText={email => this.setState({email})}
                         value={this.state.email}
                         leftIconContainerStyle={styles.formIcon}

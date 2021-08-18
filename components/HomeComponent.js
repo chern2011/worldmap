@@ -4,7 +4,6 @@ import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
-import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -43,7 +42,6 @@ class Home extends Component {
         const { navigate } = this.props.navigation;
         const renderHomeItem = ({item}) => {
             return (
-                // <Animatable.View animation='fadeInRightBig' duration={2000}>
                 <Animated.ScrollView style={{transform: [{scale: this.state.scaleValue}]}}>
                     <View style={styles.formRow}>
                         <Tile

@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import ContinentInfo from './ContinentInfoComponent';
-import AboutContact from './AboutContactComponent';
 import Profile from './ProfileComponent';
 import Constants from 'expo-constants';
-import Reservation from './ReservationComponent';
-import Favorites from './FavoritesComponent';
 import Login from './LoginComponent';
 import NetInfo from '@react-native-community/netinfo';
-import Post from './PostComponent';
 import { View, Platform, StyleSheet, Text, ScrollView, Image,
     Alert, ToastAndroid } from 'react-native';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
+import { DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';

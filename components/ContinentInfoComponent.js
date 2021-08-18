@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList,
     Modal, Button, StyleSheet, Picker,
     Alert, PanResponder, Share, Image } from 'react-native';
-import { Card, Icon, Input, Rating } from 'react-native-elements';
-import { PLACES } from '../shared/places';
-import * as SecureStore from 'expo-secure-store';
+import { Card, Icon, Input, Rating, Tile } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { COMMENTS } from '../shared/comments';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite, postComment } from '../redux/ActionCreators';
@@ -23,7 +20,18 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     postFavorite: placeId => (postFavorite(placeId)),
-    postComment: (placeId, image, rating, continent, country, author, text) => (postComment(placeId, image, rating, continent, country, author, text))
+    postComment: (placeId, text, rating, author, country, image) => (postComment(placeId, text, rating, author, country, image))
+};
+
+
+const sharePlace = (title, message, url) => {
+    Share.share({
+        title: title,
+        message: `${title}: ${message} ${url}`,
+        url: url
+    },{
+        dialogTitle: 'Share ' + title
+    });
 };
 
 function RenderPlace(props) {
@@ -69,16 +77,6 @@ function RenderPlace(props) {
         }
     });
 
-    const sharePlace = (title, message, url) => {
-        Share.share({
-            title: title,
-            message: `${title}: ${message} ${url}`,
-            url: url
-        },{
-            dialogTitle: 'Share ' + title
-        });
-    };
-
     if (place) {
         return (
             <Animatable.View
@@ -96,26 +94,26 @@ function RenderPlace(props) {
                     </Text>
                     <View style={styles.cardRow}>
                     <Icon
-                        name={props.favorite ? 'heart' : 'heart-o'}
+                        name={props.favorite ? 'gratipay' : 'heart-o'}
                         type='font-awesome'
-                        color='#f50'
+                        color='red'
                         raised
                         reverse
                         onPress={() => props.favorite ? 
                             console.log('Already set as a favorite') : props.markFavorite()}
                     />
                     <Icon
-                        name='pencil'
+                        name='edit'
                         type='font-awesome'
-                        color='#5637DD'
+                        color='green'
                         raised
                         reverse
                         onPress={() => props.onShowModal()}
                     />
                     <Icon
-                        name={'share'}
+                        name={'share-alt-square'}
                         type='font-awesome'
-                        color='#5637DD'
+                        color='blue'
                         raised
                         reverse
                         onPress={() => sharePlace(place.name, place.description, baseUrl + place.image)} 
@@ -132,17 +130,23 @@ function RenderComments({comments}) {
     const renderCommentItem = ({item}) => {
         return (
             <View style={{margin: 10}}>
-                <Text style={{fontSize: 14}}>{item.text}</Text>
-                <Rating
-                    startingValue={item.rating}
-                    ratingCount={10}
-                    imageSize={10}
-                    style={{alignItems:'flex-start', paddingVertical:'5%'}}
-                    type={'rocket'}
-                    fractions={1}
-                />
-                <Text style={{fontSize: 14}}>{`Continent: ${item.continent}`}, {`Country: ${item.country}`}</Text>
-                <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
+               
+                    <Image source={{uri: 'https://reactjs.org/logo-og.png'}}
+                        style={{width: "100%", height: 200}} />
+                    <Rating
+                        startingValue={item.rating}
+                        ratingCount={10}
+                        imageSize={30}
+                        type={'rocket'}
+                        fractions={1}
+                        showRating
+                        style={{paddingVertical: 10}}
+                        readonly
+                    />                
+                    <Text style={{fontSize: 14}}>{item.text}</Text>
+                    <Text style={{fontSize: 14}}>{item.country}</Text>
+                    <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
+                
             </View>
         );
     };
@@ -167,12 +171,11 @@ class ContinentInfo extends Component {
         this.state = {
             favorite: false,
             showModal: false,
-            imageUrl: baseUrl + 'images/Maincontactphoto.jpg',
-            rating: '',
-            continent: '',
-            country: '',
+            rating: 10,
             author: '',
             text: '',
+            country: '',
+            image: baseUrl + 'images/Maincontactphoto.jpg',
             
         };
     }
@@ -181,21 +184,19 @@ class ContinentInfo extends Component {
         this.setState({showModal: !this.state.showModal});
     }
     
-    handleComment(placeId, image, rating, continent, country, author, text) { 
-        this.props.postComment(placeId, image, rating, continent, country, author, text)
+    handleComment(placeId, rating, author, text, country, image) { 
+        this.props.postComment(placeId, rating, author, text, country, image)
         this.toggleModal();
     }
 
     resetForm() {
         this.setState({
             showModal: false,
-            imageUrl: baseUrl + 'images/Maincontactphoto.jpg',
-            rating: '',
-            continent: '',
-            country: '',
+            rating: 10,
             author: '',
             text: '',
-            
+            country: '',
+            image: baseUrl + 'images/Maincontactphoto.jpg',
         })
     }
 
@@ -272,6 +273,8 @@ class ContinentInfo extends Component {
                             source={{uri: this.state.imageUrl}}
                             loadingIndicatorSource={require('./images/Maincontactphoto.jpg')}
                             style={styles.image}
+                            onChangeText={(image)=>this.setState({image: image})}
+                            value={this.state.image}
                         />
                     </View>
                     <View style={styles.row}>
@@ -288,40 +291,18 @@ class ContinentInfo extends Component {
                         <Rating
                             showRating
                             ratingCount={10}
-                            startingValue = {5}
+                            startingValue = {10}
                             imageSize = {30}
                             type={'rocket'}
                             fractions={1}
                             onFinishRating={rating => this.setState({rating: rating})} 
                             style={{paddingVertical: 10}}
                         />
-                        <Picker
-                            style={styles.formItem2}
-                            selectedValue={this.state.continent}
-                            onValueChange={itemValue => this.setState({continent: itemValue})}
-                            value={this.state.text}
-                        >
-                            <Picker.Item label='Africa' value='Africa' />
-                            <Picker.Item label='Asia' value='Asia' />
-                            <Picker.Item label='Australia' value='Australia' />
-                            <Picker.Item label='Europe' value='Europe' />
-                            <Picker.Item label='North America' value='North America' />
-                            <Picker.Item label='South America' value='South America' />
-                        </Picker>
-                        <Input
-                            placeholder='Country'
-                            leftIcon={{
-                                type: 'font-awesome', 
-                                name: 'comment-o'}}
-                            leftIconContainerStyle={{paddingRight:10}}
-                            onChangeText={(country)=>this.setState({country: country})}
-                            value={this.state.country}
-                        />
                         <Input
                             placeholder='Author'
                             leftIcon={{ 
                                 type: 'font-awesome', 
-                                name: 'user-o'}}
+                                name: 'user'}}
                             leftIconContainerStyle={{paddingRight:10}}
                             onChangeText={(author)=>this.setState({author: author})}
                             value={this.state.author}
@@ -330,16 +311,25 @@ class ContinentInfo extends Component {
                             placeholder='Comment'
                             leftIcon={{
                                 type: 'font-awesome', 
-                                name: 'comment-o'}}
+                                name: 'comment'}}
                             leftIconContainerStyle={{paddingRight:10}}
                             onChangeText={(text)=>this.setState({text: text})}
                             value={this.state.text}
+                        />
+                        <Input
+                            placeholder='Country'
+                            leftIcon={{
+                                type: 'font-awesome', 
+                                name: 'globe'}}
+                            leftIconContainerStyle={{paddingRight:10}}
+                            onChangeText={(country)=>this.setState({country: country})}
+                            value={this.state.country}
                         />
                         <Button
                             title = 'Submit'
                             color = '#5637DD'
                             onPress={() => {
-                                this.handleComment( placeId, this.state.image,this.state.rating, this.state.continent, this.state.country, this.state.author, this.state.text );
+                                this.handleComment( placeId, this.state.rating, this.state.author, this.state.text, this.state.country, this.state.image);
                                 this.resetForm();
                             }}
                         />
