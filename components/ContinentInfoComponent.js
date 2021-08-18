@@ -276,7 +276,7 @@ class ContinentInfo extends Component {
                             value={{uri: this.state.imageUrl}}
                         />
                     </View>
-                    <View style={styles.row}>
+                    <View>
                         <Button
                             title='Camera'
                             onPress={this.getImageFromCamera}

@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, StyleSheet, Animated, Image } from 'react-native';
-import { Tile, Card, Rating } from 'react-native-elements';
+import { View, FlatList, Text, StyleSheet, Animated, Image, Alert } from 'react-native';
+import { Tile, Card, Rating, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
+import { SwipeRow } from 'react-native-swipe-list-view';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { deleteFavorite } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
-        comments: state.comments
+        comments: state.comments,
+        places: state.places,
+        favorites: state.favorites
     };
+};
+
+const mapDispatchToProps = {
+    deleteFavorite: placeId => deleteFavorite(placeId)
 };
 
 class Profile extends Component {
@@ -43,6 +53,44 @@ class Profile extends Component {
         const renderHomeItem = ({item}) => {
             return (
                 <Animated.ScrollView style={{transform: [{scale: this.state.scaleValue}]}}>
+                                   <SwipeRow rightOpenValue={-100} style={styles.swipeRow}>
+                    <View style={styles.deleteView}>
+                    <TouchableOpacity
+                            style={styles.deleteTouchable}
+                            onPress={() =>
+                                Alert.alert(
+                                    'Delete Favorite?',
+                                    'Are you sure you wish to delete the favorite campsite ' +
+                                        item.name +
+                                        '?',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log(item.name + 'Not Deleted'),
+                                            style: 'cancel'
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: () => this.props.deleteFavorite(item.id)
+                                        },
+                                    ],
+                                    { cancelable: false }
+                                )
+                            }
+                        >
+                        <Text style={styles.deleteText}>Delete</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <ListItem
+                            title={item.name}
+                            subtitle={item.description}
+                            leftAvatar={{source: {uri: baseUrl + item.image}}}
+                            onPress={() => navigate('ContinentInfo', {placeId: item.id})}
+                        />
+                    </View>
+                </SwipeRow>
                         <Card style={styles.formRow}>
                         <Tile style={styles.formRow}
                             title={item.name}
@@ -69,22 +117,29 @@ class Profile extends Component {
             );
         };
 
-        if (this.props.comments.isLoading) {
+        if (this.props.comments.isLoading, this.props.places.isLoading) {
             return <Loading />;
         }
-        if (this.props.comments.errMess) {
+        if (this.props.comments.errMess, this.props.places.errMess) {
             return (
                 <View>
-                    <Text>{this.props.comments.errMess}</Text>
+                    <Text>{this.props.comments.errMess, this.props.places.errMess}</Text>
                 </View>
             );
         }
         return (
-            <FlatList
+            <Animatable.View animation="fadeInRightBig" duration={2000}>
+                <FlatList
                 data={this.props.comments.comments}
                 renderItem={renderHomeItem}
                 keyExtractor={item => item.id.toString()}
-            />
+                data={this.props.places.places.filter(
+                    place => this.props.favorites.includes(place.id)
+                )}
+                renderItem={renderFavoriteItem}
+                keyExtractor={item => item.id.toString()}
+                />
+            </Animatable.View>
         );
     }
 }
