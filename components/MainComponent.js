@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import ContinentInfo from './ContinentInfoComponent';
-import Profile from './ProfileComponent';
+import Funfact2 from './FunfactsComponent';
 import Constants from 'expo-constants';
 import Login from './LoginComponent';
 import NetInfo from '@react-native-community/netinfo';
@@ -13,14 +13,15 @@ import { Icon } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { fetchPlaces, fetchComments, fetchPromotions,
-    fetchPartners } from '../redux/ActionCreators';
+    fetchPartners, fetchPostpros } from '../redux/ActionCreators';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 const mapDispatchToProps = {
     fetchPlaces,
     fetchComments,
     fetchPromotions,
-    fetchPartners
+    fetchPartners,
+    fetchPostpros
 };
 
 const HomeNavigator = createBottomTabNavigator(
@@ -75,9 +76,9 @@ const LoginNavigator = createBottomTabNavigator(
     }
 );
 
-const ProfileNavigator = createBottomTabNavigator(
+const Funfact2Navigator = createBottomTabNavigator(
     {
-        Profile: { screen: Profile }
+        Funfact2: { screen: Funfact2 }
     },
     {
         defaultNavigationOptions: ({navigation}) => ({
@@ -144,8 +145,8 @@ const MainNavigator = createBottomTabNavigator(
                 )
             }
         },
-        Profile: {
-            screen: ProfileNavigator,
+        Funfact2: {
+            screen: Funfact2Navigator,
             navigationOptions: {
                 drawerIcon: ({tintColor}) => (
                     <Icon
@@ -184,6 +185,7 @@ class Main extends Component {
         this.props.fetchComments();
         this.props.fetchPromotions();
         this.props.fetchPartners();
+        this.props.fetchPostpros();
 
         NetInfo.fetch().then(connectionInfo => {
             (Platform.OS === 'ios')

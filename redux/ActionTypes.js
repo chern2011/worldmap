@@ -17,3 +17,6 @@ export const ADD_FAVORITE = 'ADD_FAVORITE';
 export const DELETE_FAVORITE = 'DELETE_FAVORITE'; 
 
 export const ADD_COMMENT = 'ADD_COMMENT';
+
+export const ADD_POSTPROS = 'ADD_POSTPROS';
+export const POSTPROS_FAILED = 'POSTPROS_FAILED';

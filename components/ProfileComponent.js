@@ -1,209 +1,110 @@
 import React, { Component } from 'react';
-import Favorites from './FavoritesComponent';
-import Constants from 'expo-constants';
-import { View, Text, Platform, StyleSheet, ScrollView, 
-    Image, } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
-import { createAppContainer } from 'react-navigation';
-import SafeAreaView from 'react-native-safe-area-view';
+import { View, FlatList, Text, StyleSheet, Animated, Image } from 'react-native';
+import { Tile, Card, Rating } from 'react-native-elements';
 import { connect } from 'react-redux';
-import * as Animatable from 'react-native-animatable';
+import { baseUrl } from '../shared/baseUrl';
+import Loading from './LoadingComponent';
 
 const mapStateToProps = state => {
     return {
-        places: state.places,
-        promotions: state.promotions,
-        partners: state.partners
+        comments: state.comments
     };
 };
 
 class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            scaleValue: new Animated.Value(0)
+        };
+    }
+
+    animate() {
+        Animated.timing(
+            this.state.scaleValue,
+            {
+                toValue: 1,
+                duration: 1500,
+                useNativeDriver: true
+            }
+        ).start();
+    }
+
+    componentDidMount() {
+        this.animate();
+    }
 
     static navigationOptions = {
-        title: 'Profile'
+        title: 'Home'
     }
 
     render() {
-        return (
-            <Animatable.View animation='fadeInRightBig' duration={2000}>
-            <ScrollView>   
-                <Card>
-                <Image style={styles.Image} source={require('./images/Maincontactphoto.jpg')} />
-                <Text style={styles.PicText}>Hello</Text>
-                </Card>
-                <Card>
-                <Image style={styles.Image} source={require('./images/Maincontactphoto.jpg')} />
-                <Text style={styles.PicText}>Hello</Text>
-                </Card>
-                <Card>
-                <Image style={styles.Image} source={require('./images/Maincontactphoto.jpg')} />
-                <Text style={styles.PicText}>Hello</Text>
-                </Card>
-            </ScrollView>
-         </Animatable.View>
-    );
-    }
-}
+        const { navigate } = this.props.navigation;
+        const renderHomeItem = ({item}) => {
+            return (
+                <Animated.ScrollView style={{transform: [{scale: this.state.scaleValue}]}}>
+                        <Card style={styles.formRow}>
+                        <Tile style={styles.formRow}
+                            title={item.name}
+                            caption={item.description}
+                            featured
+                            onPress={() => navigate('ContinentInfo', { placeId: item.id })}
+                            imageSrc={styles.image, {uri: baseUrl + item.image}} 
+                        />      
+                            <Rating
+                                startingValue={item.rating}
+                                ratingCount={10}
+                                imageSize={30}
+                                type={'rocket'}
+                                fractions={1}
+                                showRating
+                                style={{paddingVertical: 10}}
+                                readonly
+                            />    
+                            <Text style={{fontSize: 14}}>{item.text}</Text>
+                            <Text style={{fontSize: 14}}>{`${item.country}`}</Text>
+                            <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
+                        </Card>
+                </Animated.ScrollView>
+            );
+        };
 
-const ProfileNavigator = createStackNavigator(
-    {
-        Profile: { screen: Profile }
-    },
-    {
-        defaultNavigationOptions: ({navigation}) => ({
-            headerStyle: {
-                backgroundColor: '#1c7506'
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff'
-            },
-            headerRight: <Icon
-                name='address-card'
-                type='font-awesome'
-                iconStyle={styles.stackIcon}
-                onPress={() => navigation.toggleDrawer()}
-            />
-        })
-    },
-);
-
-    const FavoritesNavigator = createStackNavigator(
-        {
-            Favorites: { screen: Favorites }
-        },
-        {
-            defaultNavigationOptions: ({navigation}) => ({
-                headerStyle: {
-                    backgroundColor: '#1c7506'
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                    color: '#fff'
-                },
-                headerRight: <Icon
-                    name='heart'
-                    type='font-awesome'
-                    iconStyle={styles.stackIcon}
-                    onPress={() => navigation.toggleDrawer()}
-                />
-            })
+        if (this.props.comments.isLoading) {
+            return <Loading />;
         }
-    );
-
-    const CustomDrawer = props => (
-        <ScrollView>
-            <SafeAreaView 
-                style={styles.container}
-                forceInset={{top: 'always', horizontal: 'never'}}>
-                <View style={styles.drawerHeader}>
-                    <View style={{flex: 1}}>
-                        <Image source={require('./images/WorldMap.jpg')} style={styles.drawerImage} />
-                    </View>
-                    <View style={{flex: 2}}>
-                        <Text style={styles.drawerHeaderText}>NuCamp</Text>
-                    </View>
+        if (this.props.comments.errMess) {
+            return (
+                <View>
+                    <Text>{this.props.comments.errMess}</Text>
                 </View>
-                <DrawerItems {...props} />
-            </SafeAreaView>
-        </ScrollView>
-    ); 
-
-    const RightsideNavigator = createDrawerNavigator(
-        {
-            Profile: {
-                screen: ProfileNavigator,
-                navigationOptions: {
-                    drawerIcon: ({tintColor}) => (
-                        <Icon
-                            name='address-card'
-                            type='font-awesome'
-                            size={24}
-                            color={tintColor}
-                        />
-                    )
-                }
-            },
-        Favorite: {
-                screen: FavoritesNavigator,
-                navigationOptions: {
-                    drawerIcon: ({tintColor}) => (
-                        <Icon
-                            name='heart'
-                            type='font-awesome'
-                            size={24}
-                            color={tintColor}
-                        />
-                    )
-                }
-            },
-        },
-        {
-            initialRouteName: 'Profile',
-            drawerBackgroundColor: '#CEC8FF',
-            drawerPosition: "right",
-            contentComponent: CustomDrawer
+            );
         }
-    );
-
-const Apps3Navigator = createAppContainer(RightsideNavigator)
-class Profile2 extends Component {
-
-    render() {
         return (
-            <View style={{
-                flex: 1,
-                paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
-            }}>
-                <Apps3Navigator />
-            </View>
+            <FlatList
+                data={this.props.comments.comments}
+                renderItem={renderHomeItem}
+                keyExtractor={item => item.id.toString()}
+            />
         );
     }
 }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-        },
-        drawerHeader: {
-            backgroundColor: '#00ffff',
-            height: 140,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-            flexDirection: 'row'
-        },
-        drawerHeaderText: {
-            color: '#fff',
-            margin: 40,
-            fontSize: 24,
-            fontWeight: 'bold'
-        },
-        PicText: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 20,
-            margin: 10,
-        },
-        drawerImage: {
-            margin: 10,
-            height: 65,
-            width: "100%"
-        },
-        stackIcon: {
-            marginRight: 10,
-            color: '#fff',
-            fontSize: 24
-        },
-        Image: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: 10,
-            height: 200,
-            width: "100%",
-        },
-    });
-    
-export default connect(mapStateToProps)(Profile2);
+const styles = StyleSheet.create({
+    formRow: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        marginLeft: 10,
+        marginRight: 10,
+        width: "90%"
+    },
+    image: {
+        width: "90%",
+    },
+});
+
+export default connect(mapStateToProps)(Profile);
+
+
+// onPress={() => this.props.navigation.navigate('Funfact2')}

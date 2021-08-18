@@ -178,3 +178,54 @@ export const addComment = comment => ({
     type: ActionTypes.ADD_COMMENT,
     payload: comment
 });
+
+export const fetchPostpros = () => dispatch => {
+    return fetch(baseUrl + 'postpros')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            })
+        .then(response => response.json())
+        .then(postpros => dispatch(addPostpros(postpros)))
+        .catch(error => dispatch(postprosFailed(error.message)));
+};
+
+export const postprosFailed = errMess => ({
+    type: ActionTypes.POSTPROS_FAILED,
+    payload: errMess
+});
+
+export const addPostprs = postpros => ({
+    type: ActionTypes.ADD_POSTPROS,
+    payload: postpros
+});
+
+export const postPostpro = (placeId, rating, author, text, country, image) => (dispatch) => {
+    const newPostpro = {
+        placeId,
+        rating,
+        author,
+        text,
+        country,
+        image
+    }
+    newPostpro.date = new Date().toISOString();
+
+    setTimeout(() => { 
+        dispatch(addPostpro(newPostpro));
+        }, 2000);
+};
+
+export const addPostpro = postpro => ({
+    type: ActionTypes.ADD_POSTPRO,
+    payload: postpro
+});

@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { postFavorite, postComment } from '../redux/ActionCreators';
+import { postFavorite, postComment, } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -18,7 +18,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     postFavorite: placeId => (postFavorite(placeId)),
-    postComment: (placeId, text, rating, author, country, image) => (postComment(placeId, text, rating, author, country, image))
+    postComment: (placeId, image, rating, continent, country, author, text) => (postComment(placeId, image, rating, continent, country, author, text))
 };
 
 class Post extends Component {
@@ -40,8 +40,8 @@ class Post extends Component {
         this.setState({showModal: !this.state.showModal});
     }
     
-    handleComment(placeId, rating, author, text) { 
-        this.props.postComment(placeId, rating, author, text)
+    handleComment(placeId, text, rating, author, country, image) { 
+        this.props.postComment(placeId, text, rating, author, country, image)
         this.toggleModal();
     }
 
